@@ -5,27 +5,22 @@
 Comments:
 1. The panel frames are darker, almost black in PGM.
 2. Nearby colors are indistinguishable to the human eye. Perhaps go coarser, 5 instead of 10?
-3. Consistent union does not necessarily create 3 DIFFERENT permutations of the union.
-4. In the AND relation, additional to not being disjunct, two sets should maybe not be identical.
-5. There is inconsistency between set_RL and consistentunion in the way +1 is treated.
-6. should set_relation_line return indices or indicator vectors?
-
 
 Roadmap:
 1. [DONE] Implement a single triple
-2. [IN PROGRESS] Implement all triples
-3. Implement all combinations of triples
-
+2. [DONE] Implement all triples
+3. [DONE]Implement all combinations of triples
 '''
 
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from tqdm import tqdm
+import random
+import string
 #np.random.seed(42)
 #plt.rcParams["figure.figsize"] = (1,1)
-
-   
 
 def get_random_triples(num=None, seed=None):
     #setting seed for debugging
@@ -331,7 +326,7 @@ def generate_RPM(triples=None):
     if triples is None:
         triples = get_random_triples()
 
-    print(triples)
+    #print(triples)
     shape_triples, line_triples = process_triples(triples)
     shape_triples = [[-1,-1,-1]] if shape_triples == [] else shape_triples
     line_triples = [[-1,-1,-1]] if line_triples == [] else line_triples
@@ -624,7 +619,6 @@ relations = ['progression', 'XOR', 'OR', 'AND', 'union']
 objects = ['shape', 'line']
 attributes = ['size', 'color', 'number', 'position', 'type']
 
-
 triples_ = dict([
     ('shape', dict([
         ('size', ['progression', 'XOR', 'OR', 'AND', 'union']),
@@ -675,59 +669,18 @@ attr_domains_ = {
     attributes[4] : types
 }
 
+num_samples = 100000
+data_directory = '/home/ege/Documents/bthesis/data/test/'
 
-
-triple =['AND', 'line', 'color']
-triples_else = [['shape', 'type', 'OR'], ['line', 'color', 'union']]
-triples_num = [['shape', 'type', 'OR'], ['line', 'color', 'union'], ['shape', 'number', 'progression']]
-triples_pos = [['shape', 'type', 'union'], ['line', 'color', 'union'], ['shape', 'position', 'AND']]
-triples_full = [['shape', 'type', 'OR'], ['shape', 'color', 'progression'], ['shape', 'size', 'union'], ['shape', 'number', 'progression']]
-triples_line = [['line', 'color', 'union'],['line', 'type', 'AND']]
-#RPM = generate_RPM(triple)
-#filename = triple[0] + '_' + triple[1] + '_' + triple[2]
-#render(RPM, filename)
-#generate_RPM()
-#print(get_non_identical_sets(4))
-#RPM = generate_RPM(triples_line + triples_pos)
-#render(RPM, name='triples_line')
-#render(generate_RPM(), name='random')
-#print(RPM)
-#vec = to_npvector(RPM)
-#print(vec)
-
-num_samples = 10000
-'''
-triples = sort_triples(get_random_triples())
-print(triples)
-RPM_name = ''
-for triple in triples:
-    RPM_name += str(objects.index(triple[0]))
-    RPM_name += str(attributes.index(triple[1]))
-    RPM_name += str(relations.index(triple[2]))
-print(RPM_name)
-RPM = generate_RPM(triples)
-vec = to_npvector(RPM)
-np.save(RPM_name, vec)
-
-vec_ = np.load(RPM_name + '.npy').astype(int)
-assert(np.array_equal(vec, vec_))
-RPM_ = to_RPM(vec_)
-print(RPM)
-print('')
-print(RPM_)
-print(is_equal(RPM, RPM_))
-'''
-
-
-
-'''
-for i in range(num_samples):
-    triples = get_random_triples()
+for i in tqdm(range(num_samples)):
+    triples = sort_triples(get_random_triples())
+    RPM_name = ''
+    for triple in triples:
+        RPM_name += str(objects.index(triple[0]))
+        RPM_name += str(attributes.index(triple[1]))
+        RPM_name += str(relations.index(triple[2]))
+    rand_suffix = string.ascii_lowercase
+    RPM_name += '_' + ''.join(random.choice(rand_suffix) for i in range(5))
     RPM = generate_RPM(triples)
-    #generate_RPM([['line', 'color', 'OR']])
-    print(i)
-'''
-
-#RPM = generate_RPM([['line', 'color', 'union'], ['line', 'type', 'XOR'], ['shape', 'size', 'progression'], ['shape', 'color', 'progression'], ['shape', 'type', 'union'], ['shape', 'position', 'XOR']])
-RPM = generate_RPM([['shape', 'type', 'AND'], ['shape', 'number', 'progression'], ['line', 'type', 'OR']])
-render(RPM, name='dad_2')
+    vec = to_npvector(RPM)
+    np.save(data_directory+RPM_name, vec)
