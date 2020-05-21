@@ -12,7 +12,9 @@ Roadmap:
 3. [DONE]Implement all combinations of triples
 '''
 
+import sys, getopt, os
 import numpy as np
+from keras.utils.np_utils import to_categorical
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
@@ -494,7 +496,7 @@ def empty_RPM():
         panel_list.append(panel)
     return panel_list
 
-def render(RPM, name=None):
+def render(RPM, name=None, directory='./'):
     fig, ax = plt.subplots(3, 3, sharex='col', sharey='row', figsize=(20,20))
     fig.set_dpi(40)
     c = 0
@@ -541,34 +543,84 @@ def render(RPM, name=None):
 
             c += 1
     if name is None:
-        plt.savefig('RPM.png')
+        plt.savefig(directory + 'RPM.png')
 
     else:
-        plt.savefig(name + '.png')
+        plt.savefig(directory + name + '.png')
 
-def to_npvector(RPM):
-
-    M = np.empty((9,33))
-    for i in range(9):
-        s = RPM[i]['shapes'].flatten()
-        l = RPM[i]['lines']
-        M[i] = np.concatenate((s,l))
+def to_npvector(RPM, onehot=False):
+    
+    if onehot == False:
+        M = np.empty((9,33))
+        for i in range(9):
+            s = RPM[i]['shapes'].flatten()
+            l = RPM[i]['lines']
+            M[i] = np.concatenate((s,l))
+    
+    if onehot == True:
+        M = np.empty((9,336))
+        for i in range(9):
+            s1 = to_categorical(RPM[i]['shapes'][:,0], num_classes=11)
+            s2 = to_categorical(RPM[i]['shapes'][:,1], num_classes=11)
+            s3 = to_categorical(RPM[i]['shapes'][:,2], num_classes=8)
+            l = to_categorical(RPM[i]['lines'], num_classes=11)
+            M[i] = np.concatenate((s1.flatten(), s2.flatten(), s3.flatten(), l.flatten()))
+    
     
     return M.flatten()
 
-def to_RPM(vec):
-
-    RPM = []
-    for i in range(9):
-        panel = vec[i*33:i*33+33]
-        assert panel.size == 33
-        shape_M = panel[:27].reshape((9,3))
-        line_vec = panel[27:]
-        RPM.append(dict([
-            ('shapes', shape_M),
-            ('lines', line_vec)
-        ]))
+def logits_to_RPM(logits):
+    RPM = empty_RPM()
     
+    for i in range(9):
+        panel = logits[i]
+        sizes = panel[:99].reshape((9,11))
+        colors = panel[99:198].reshape((9,11))
+        types = panel[198:270].reshape((9,8))
+        assert np.allclose(np.sum(sizes, axis=1), 1)
+        assert np.allclose(np.sum(colors, axis=1), 1)
+        assert np.allclose(np.sum(types, axis=1), 1)
+        shape_M = np.empty((9,3))
+        shape_M[:,0] = np.argmax(sizes, axis=1)
+        shape_M[:,1] = np.argmax(colors, axis=1)
+        shape_M[:,2] = np.argmax(types, axis=1)
+        RPM[i]['shapes'] = shape_M.astype(int)
+
+        lv = panel[-66:].reshape((6,11))
+        assert np.allclose(np.sum(lv, axis=1), 1)
+        line_vec = np.argmax(lv, axis=1)
+        RPM[i]['lines'] = line_vec.astype(int)
+
+    return RPM
+
+def to_RPM(vec, onehot=False):
+
+    if onehot == False:
+        RPM = []
+        for i in range(9):
+            panel = vec[i*33:i*33+33]
+            assert panel.size == 33
+            shape_M = panel[:27].reshape((9,3))
+            line_vec = panel[27:]
+            RPM.append(dict([
+                ('shapes', shape_M),
+                ('lines', line_vec)
+            ]))
+    
+    if onehot == True:
+        RPM = []
+        for i in range(9):
+            panel = vec[i*336:i*336+336]
+            assert panel.size == 336
+            sizes = np.argmax(panel[:99].reshape((9,11)), axis=1)
+            colors = np.argmax(panel[99:198].reshape((9,11)), axis=1)
+            types = np.argmax(panel[198:270].reshape((9,8)), axis=1)
+            line_vec = np.argmax(panel[270:336].reshape((6,11)), axis=1)
+            shape_M = np.concatenate((sizes[np.newaxis,:], colors[np.newaxis,:], types[np.newaxis,:])).T
+            RPM.append(dict([
+                ('shapes', shape_M),
+                ('lines', line_vec)
+            ]))
     return RPM
 
 def is_equal(RPM_1, RPM_2):
@@ -585,7 +637,6 @@ def is_equal(RPM_1, RPM_2):
 def assert_equal(RPM_1, RPM_2):
     
     for i in range(9):
-        print(i)
         assert np.array_equal(RPM_1[i]['shapes'], RPM_2[i]['shapes'])
         assert np.array_equal(RPM_1[i]['lines'], RPM_2[i]['lines'])
     
@@ -618,6 +669,36 @@ def sort_triples(triples):
 relations = ['progression', 'XOR', 'OR', 'AND', 'union']
 objects = ['shape', 'line']
 attributes = ['size', 'color', 'number', 'position', 'type']
+
+triples__ = [[objects[0], attributes[0], relations[0]],
+            [objects[0], attributes[0], relations[1]],
+            [objects[0], attributes[0], relations[2]],
+            [objects[0], attributes[0], relations[3]],
+            [objects[0], attributes[0], relations[4]],
+            [objects[0], attributes[1], relations[0]],
+            [objects[0], attributes[1], relations[1]],
+            [objects[0], attributes[1], relations[2]],
+            [objects[0], attributes[1], relations[3]],
+            [objects[0], attributes[1], relations[4]],
+            [objects[0], attributes[2], relations[0]],
+            [objects[0], attributes[2], relations[4]],
+            [objects[0], attributes[3], relations[1]],
+            [objects[0], attributes[3], relations[2]],
+            [objects[0], attributes[3], relations[3]],
+            [objects[0], attributes[4], relations[0]],
+            [objects[0], attributes[4], relations[1]],
+            [objects[0], attributes[4], relations[2]],
+            [objects[0], attributes[4], relations[3]],
+            [objects[0], attributes[4], relations[4]],
+            [objects[1], attributes[1], relations[0]],
+            [objects[1], attributes[1], relations[1]],
+            [objects[1], attributes[1], relations[2]],
+            [objects[1], attributes[1], relations[3]],
+            [objects[1], attributes[1], relations[4]],
+            [objects[1], attributes[4], relations[1]],
+            [objects[1], attributes[4], relations[2]],
+            [objects[1], attributes[4], relations[3]],
+            [objects[1], attributes[4], relations[4]]]
 
 triples_ = dict([
     ('shape', dict([
@@ -669,18 +750,57 @@ attr_domains_ = {
     attributes[4] : types
 }
 
-num_samples = 100000
-data_directory = '/home/ege/Documents/bthesis/data/test/'
 
-for i in tqdm(range(num_samples)):
-    triples = sort_triples(get_random_triples())
-    RPM_name = ''
-    for triple in triples:
-        RPM_name += str(objects.index(triple[0]))
-        RPM_name += str(attributes.index(triple[1]))
-        RPM_name += str(relations.index(triple[2]))
-    rand_suffix = string.ascii_lowercase
-    RPM_name += '_' + ''.join(random.choice(rand_suffix) for i in range(5))
-    RPM = generate_RPM(triples)
-    vec = to_npvector(RPM)
-    np.save(data_directory+RPM_name, vec)
+def main(argv):
+    
+    onehot = False
+    num_samples = 10
+    opts, _ = getopt.getopt(argv, "on:", ["onehot", "num_samples="])
+    for opt, arg in opts:
+        if opt in ('-o', '--onehot'):
+            onehot = True
+        if opt in ('-h', '--num_samples'):
+            num_samples = int(arg)
+
+    
+    data_directory_prefix = '/home/ege/Documents/bthesis/data/'
+
+    if onehot:
+        data_directory_suffix = 'onehot/neutral_' + str(num_samples)
+    else:
+        data_directory_suffix = 'graded/neutral_' + str(num_samples)
+
+    data_directory = data_directory_prefix + data_directory_suffix + '/'
+    
+    
+    if not os.path.exists(data_directory):
+        os.mkdir(data_directory)
+
+    for _ in tqdm(range(num_samples)):
+        triples = sort_triples(get_random_triples())
+        RPM_name = ''
+        for triple in triples:
+            RPM_name += str(objects.index(triple[0]))
+            RPM_name += str(attributes.index(triple[1]))
+            RPM_name += str(relations.index(triple[2]))
+        rand_suffix = string.ascii_lowercase
+        RPM_name += '_' + ''.join(random.choice(rand_suffix) for j in range(5))
+        RPM = generate_RPM(triples)
+        vec = to_npvector(RPM, onehot=onehot)
+        
+        #Encoding the triples present in the RPM
+        triples_oh = np.zeros(29)
+        for triple in triples:
+            triples_oh[triples__.index(triple)] = 1
+
+        np.save(data_directory+RPM_name, np.concatenate((vec,triples_oh)))
+    
+
+    
+if __name__ == "__main__":
+    main(sys.argv[1:])
+
+
+
+
+

@@ -25,33 +25,12 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+
 import warnings
 #warnings.filterwarnings("error")
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-params = {'BATCH_SIZE': 64,          # number of data points in each batch
-          'N_EPOCHS' : 1000,           # times to run the model on complete data
-          'INPUT_DIM' : 9 * 336,     # size of each input
-          'HIDDEN_DIM' : 256,        # hidden dimension
-          'LATENT_DIM' : 50,         # latent vector dimension
-          'lr' : 1e-3,               # learning rate
-          'train_size' : 0.8,
-          'val_size' : 0.1,
-          'test_size' : 0.1}
 
-data_directory = "/home/ege/Documents/bthesis/data/onehot/neutral_64000/"
-data = PGM(data_directory)
-
-train_size = int(len(data)*params['train_size'])
-validation_size = int(len(data)*params['val_size'])
-test_size = int(len(data)*params['test_size'])
-
-training_set, validation_set, test_set = random_split(data, [train_size, validation_size, test_size])
-
-train_iterator = DataLoader(training_set, batch_size=params['BATCH_SIZE'], shuffle=True)
-validation_iterator = DataLoader(validation_set, batch_size=params['BATCH_SIZE'])
-test_iterator = DataLoader(test_set, batch_size=params['BATCH_SIZE'])
 
 class mySoftmax(nn.Module):
     
@@ -109,7 +88,6 @@ class Encoder(nn.Module):
 
         return z_mu, z_var
 
-
 class Decoder(nn.Module):
     ''' This the decoder part of VAE
 
@@ -139,7 +117,6 @@ class Decoder(nn.Module):
 
         return predicted
 
-
 class VAE(nn.Module):
     def __init__(self, enc, dec):
         ''' This the VAE, which takes a encoder and decoder.
@@ -165,129 +142,13 @@ class VAE(nn.Module):
         return predicted, z_mu, z_var
 
 
-# encoder
-encoder = Encoder(params['INPUT_DIM'], params['HIDDEN_DIM'], params['LATENT_DIM'])
-
-# decoder
-decoder = Decoder(params['LATENT_DIM'], params['HIDDEN_DIM'], params['INPUT_DIM'])
-
-# vae
-model = VAE(encoder, decoder).to(device)
-
-# optimizer
-optimizer = optim.Adam(model.parameters(), lr=params['lr'])
 
 
-def train():
-    # set the train mode
-    model.train()
-
-    # loss of the epoch
-    train_loss = 0
-    r_loss = 0
-    div_loss = 0
-
-    for i, x in enumerate(train_iterator):
-        # reshape the data into [batch_size, 784]
-        x = x.view(-1, 9 * 336).float()
-        x = x.to(device)
-
-        # update the gradients to zero
-        optimizer.zero_grad()
-
-        # forward pass
-        x_sample, z_mu, z_var = model(x)
-
-        # reconstruction loss
-        recon_loss = F.binary_cross_entropy(x_sample, x, reduction='sum')
-        r_loss += recon_loss.item()
-
-        # kl divergence loss
-        kl_loss = 0.5 * torch.sum(torch.exp(z_var) + z_mu**2 - 1.0 - z_var)
-        div_loss += kl_loss.item()
-
-        # total loss
-        loss = recon_loss + kl_loss
-
-        # backward pass
-        loss.backward()
-        train_loss += loss.item()
-
-        # update the weights
-        optimizer.step()
-
-    return r_loss, div_loss, train_loss
 
 
-def test():
-    # set the evaluation mode
-    model.eval()
-
-    # test loss for the data
-    test_loss = 0
-    r_loss = 0
-    div_loss = 0
-
-    # we don't need to track the gradients, since we are not updating the parameters during evaluation / testing
-    with torch.no_grad():
-        for i, x in enumerate(test_iterator):
-            # reshape the data
-            x = x.view(-1, 9 * 336).float()
-            x = x.to(device)
-
-            # forward pass
-            x_sample, z_mu, z_var = model(x)
-
-            # reconstruction loss
-            recon_loss = F.binary_cross_entropy(x_sample, x, reduction='sum')
-            r_loss += recon_loss.item()
-
-            # kl divergence loss
-            kl_loss = 0.5 * torch.sum(torch.exp(z_var) + z_mu**2 - 1.0 - z_var)
-            div_loss += kl_loss.item()
-
-            # total loss
-            loss = recon_loss + kl_loss
-            test_loss += loss.item()
-
-    return r_loss, div_loss, test_loss
-
-best_test_loss = float('inf')
-
-for e in range(params['N_EPOCHS']):
-
-    train_rloss, train_divloss, train_loss = train()
-    test_rloss, test_divloss, test_loss = test()
-
-    train_loss /= len(training_set)
-    train_rloss /= len(training_set)
-    train_divloss /= len(training_set)
-    test_loss /= len(test_set)
-    test_rloss /= len(test_set)
-    test_divloss /= len(test_set)
-
-    print(f'Epoch {e}, Train Loss: {train_loss:.2f}, Test Loss: {test_loss:.2f}')
-    print(f'Epoch {e}, Train_Recon Loss: {train_rloss:.2f}, Test_Recon Loss: {test_rloss:.2f}')
-    print(f'Epoch {e}, Train_KL Loss: {train_divloss:.2f}, Test_KL Loss: {test_divloss:.2f}')
-    print('')
-    if best_test_loss > test_loss:
-        best_test_loss = test_loss
-        patience_counter = 1
-    else:
-        patience_counter += 1
-
-    if patience_counter > 3:
-        break
 
 
-# sample and generate a image
-z = torch.randn(1, params['LATENT_DIM']).to(device)
-reconstructed_RPM = model.dec(z)
-RPM = reconstructed_RPM.view((9,336)).data
-RPM = RPM.cpu().numpy()
-np.save('/home/ege/Documents/bthesis/data/vae_generated/genesis3.npy', RPM)
-print(z.shape)
-print(RPM)
-#plt.figure()
-#plt.imshow(img, cmap='gray')
-#plt.show()
+
+
+
+
