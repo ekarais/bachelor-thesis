@@ -29,16 +29,13 @@ import matplotlib.pyplot as plt
 import warnings
 #warnings.filterwarnings("error")
 
-
-
-
 class mySoftmax(nn.Module):
     
-    def __init__(self):
+    def __init__(self, dim=2):
 
         super().__init__()
 
-        self.softmax = nn.Softmax(dim=2)
+        self.softmax = nn.Softmax(dim=dim)
         self.offsets = [0, 99, 198, 270, 336]
         self.dimensions = [[9,11],[9,11],[9,8],[6,11]]
     
@@ -73,17 +70,19 @@ class Encoder(nn.Module):
         super().__init__()
 
         self.linear = nn.Linear(input_dim, hidden_dim)
+        self.hidden = nn.Linear(hidden_dim, hidden_dim)
         self.mu = nn.Linear(hidden_dim, z_dim)
         self.var = nn.Linear(hidden_dim, z_dim)
 
     def forward(self, x):
         # x is of shape [batch_size, input_dim]
 
-        hidden = F.relu(self.linear(x))
+        x = F.relu(self.linear(x))
+        x = F.relu(self.hidden(x))
         # hidden is of shape [batch_size, hidden_dim]
-        z_mu = self.mu(hidden)
+        z_mu = self.mu(x)
         # z_mu is of shape [batch_size, latent_dim]
-        z_var = self.var(hidden)
+        z_var = self.var(x)
         # z_var is of shape [batch_size, latent_dim]
 
         return z_mu, z_var
@@ -102,16 +101,18 @@ class Decoder(nn.Module):
         super().__init__()
 
         self.linear = nn.Linear(z_dim, hidden_dim)
+        self.hidden = nn.Linear(hidden_dim, hidden_dim)
         self.out = nn.Linear(hidden_dim, output_dim)
         self.custom_softmax = mySoftmax()
 
     def forward(self, x):
         # x is of shape [batch_size, latent_dim]
 
-        hidden = F.relu(self.linear(x))
+        x = F.relu(self.linear(x))
+        x = F.relu(self.hidden(x))
         # hidden is of shape [batch_size, hidden_dim]
 
-        predicted = self.custom_softmax(self.out(hidden))
+        predicted = self.custom_softmax(self.out(x))
         # predicted is of shape [batch_size, output_dim]
         #predicted = torch.sigmoid(self.out(hidden))
 

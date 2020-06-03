@@ -150,6 +150,13 @@ def get_value_sets(relation, n, lb=1):
 
     value_sets = [[],[],[],[],[],[],[],[],[]]
     u_values = 1 + (lb-1) + np.random.choice(n-(lb-1), 3, replace=False) #only used for the union case
+    permutations = np.array([[0,1,2],
+                             [0,2,1],
+                             [1,0,2],
+                             [1,2,0],
+                             [2,0,1],
+                             [2,1,0]])
+    three_unique_permutations = permutations[np.random.choice(6,3, replace=False)]
     values = [[],[],[]]
 
     for i in range(3):
@@ -173,6 +180,13 @@ def get_value_sets(relation, n, lb=1):
             
         if relation == 'OR':
             values[0], values[1] = get_non_identical_sets(n)
+            #if the sets are disjunct, make them non-disjunct
+            if len(set(values[0]).intersection(set(values[1]))) == 0:
+                #edge-case: the modification in the else clause would make the sets identical
+                if values[0].size == values[1].size and values[0].size == 1:
+                    values[1] = np.concatenate((values[0], values[1]))
+                else:
+                    values[1][0] = values[0][0]
             values[2] = np.array(list(set(values[0]).union(set(values[1]))))
 
         if relation == 'AND':
@@ -188,7 +202,7 @@ def get_value_sets(relation, n, lb=1):
             values[2] = np.array(list(set(values[0]).intersection(set(values[1]))))
 
         if relation == 'union':
-            value_list = u_values[np.random.choice(3, 3, replace=False)]
+            value_list = u_values[three_unique_permutations[i]]
             for k in range(3):
                 values[k] = np.array([value_list[k]])
 
@@ -670,35 +684,35 @@ relations = ['progression', 'XOR', 'OR', 'AND', 'union']
 objects = ['shape', 'line']
 attributes = ['size', 'color', 'number', 'position', 'type']
 
-triples__ = [[objects[0], attributes[0], relations[0]],
-            [objects[0], attributes[0], relations[1]],
-            [objects[0], attributes[0], relations[2]],
-            [objects[0], attributes[0], relations[3]],
-            [objects[0], attributes[0], relations[4]],
-            [objects[0], attributes[1], relations[0]],
-            [objects[0], attributes[1], relations[1]],
-            [objects[0], attributes[1], relations[2]],
-            [objects[0], attributes[1], relations[3]],
-            [objects[0], attributes[1], relations[4]],
-            [objects[0], attributes[2], relations[0]],
-            [objects[0], attributes[2], relations[4]],
-            [objects[0], attributes[3], relations[1]],
-            [objects[0], attributes[3], relations[2]],
-            [objects[0], attributes[3], relations[3]],
-            [objects[0], attributes[4], relations[0]],
-            [objects[0], attributes[4], relations[1]],
-            [objects[0], attributes[4], relations[2]],
-            [objects[0], attributes[4], relations[3]],
-            [objects[0], attributes[4], relations[4]],
-            [objects[1], attributes[1], relations[0]],
-            [objects[1], attributes[1], relations[1]],
-            [objects[1], attributes[1], relations[2]],
-            [objects[1], attributes[1], relations[3]],
-            [objects[1], attributes[1], relations[4]],
-            [objects[1], attributes[4], relations[1]],
-            [objects[1], attributes[4], relations[2]],
-            [objects[1], attributes[4], relations[3]],
-            [objects[1], attributes[4], relations[4]]]
+triples__ = [[objects[0], attributes[0], relations[0]], #shape, size, progression
+            [objects[0], attributes[0], relations[1]],  #shape, size, XOR
+            [objects[0], attributes[0], relations[2]],  #shape, size, OR
+            [objects[0], attributes[0], relations[3]],  #shape, size, AND
+            [objects[0], attributes[0], relations[4]],  #shape, size, union
+            [objects[0], attributes[1], relations[0]],  #shape, color, progression
+            [objects[0], attributes[1], relations[1]],  #shape, color, XOR
+            [objects[0], attributes[1], relations[2]],  #shape, color, OR
+            [objects[0], attributes[1], relations[3]],  #shape, color, AND
+            [objects[0], attributes[1], relations[4]],  #shape, color, union
+            [objects[0], attributes[2], relations[0]],  #shape, number, pogression
+            [objects[0], attributes[2], relations[4]],  #shape, number, unrion
+            [objects[0], attributes[3], relations[1]],  #shape, position, XOR
+            [objects[0], attributes[3], relations[2]],  #shape, position, OR
+            [objects[0], attributes[3], relations[3]],  #shape, position, AND
+            [objects[0], attributes[4], relations[0]],  #shape, type, progression
+            [objects[0], attributes[4], relations[1]],  #shape, type, XOR
+            [objects[0], attributes[4], relations[2]],  #shape, type, OR
+            [objects[0], attributes[4], relations[3]],  #shape, type, AND
+            [objects[0], attributes[4], relations[4]],  #shape, type, union
+            [objects[1], attributes[1], relations[0]],  #line, color, progression
+            [objects[1], attributes[1], relations[1]],  #line, color, XOR
+            [objects[1], attributes[1], relations[2]],  #line, color, OR  
+            [objects[1], attributes[1], relations[3]],  #line, color, AND
+            [objects[1], attributes[1], relations[4]],  #line, color, union
+            [objects[1], attributes[4], relations[1]],  #line, position, XOR
+            [objects[1], attributes[4], relations[2]],  #line, position, OR
+            [objects[1], attributes[4], relations[3]],  #line, position, AND
+            [objects[1], attributes[4], relations[4]]]  #line, position, union
 
 triples_ = dict([
     ('shape', dict([
@@ -784,7 +798,7 @@ def main(argv):
             RPM_name += str(attributes.index(triple[1]))
             RPM_name += str(relations.index(triple[2]))
         rand_suffix = string.ascii_lowercase
-        RPM_name += '_' + ''.join(random.choice(rand_suffix) for j in range(5))
+        RPM_name += '_' + ''.join(random.choice(rand_suffix) for j in range(20))
         RPM = generate_RPM(triples)
         vec = to_npvector(RPM, onehot=onehot)
         
