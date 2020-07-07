@@ -26,9 +26,8 @@ class RegeneratedPGM(Dataset):
 
 class GraphPGM(InMemoryDataset):
     
-    def __init__(self, root, size, transform=None, pre_transform=None):
-        self.size = size
-        self.data_dir = "/home/ege/Documents/bthesis/data/onehot/neutral_" + str(self.size) + "/"
+    def __init__(self, root, data_dir, transform=None, pre_transform=None):
+        self.data_dir = data_dir
         super(GraphPGM, self).__init__(root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
         assert os.path.isdir(self.data_dir)
