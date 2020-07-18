@@ -25,20 +25,20 @@ class RegeneratedPGM(Dataset):
         return self.length
 
 class GraphPGM(InMemoryDataset):
-    
+
     def __init__(self, root, data_dir, transform=None, pre_transform=None):
         self.data_dir = data_dir
         super(GraphPGM, self).__init__(root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
         assert os.path.isdir(self.data_dir)
-        
+
     @property
     def processed_file_names(self):
         return ['data.pt']
-            
+
     def process(self):
         data_list = []
-        
+
         edge_index = torch.empty(2, 56, dtype=torch.long)
         c = 0
         for i in range(8):
@@ -46,7 +46,7 @@ class GraphPGM(InMemoryDataset):
                 if i != j:
                     edge_index[:,c] = torch.tensor([i,j], dtype=torch.long)
                     c += 1
-        
+
         #Since I don't initialize data.pos, the GNN does not know the positions of the panels ==> invariance! (might also lead to poor performance)
         for filename in os.listdir(self.data_dir):
             RPM = np.load(self.data_dir + filename)
@@ -54,52 +54,52 @@ class GraphPGM(InMemoryDataset):
             y = torch.from_numpy(RPM[-29:].reshape(1,29))
             data = Data(x=x, edge_index=edge_index, y=y)
             data_list.append(data)
-            
+
         data, slices = self.collate(data_list)
         torch.save((data, slices), self.processed_paths[0])
-    
-    
+
+
 
 def rule_metrics(x, x_rules, device):
     warnings.filterwarnings('error')
 
     #x.to(device)
     #x_rules.to(device)
-    
+
     #first, convert logits to hard assignments.
     y = x.view(-1, 3, 3, 336).float()
     y /= 0.5
     y += 0.1
-    sizes_oh = y[:,:,:,:99].view(-1, 3, 3, 9, 11) 
-    cols_oh = y[:,:,:,99:198].view(-1, 3, 3, 9, 11)
-    types_oh = y[:,:,:,198:270].view(-1, 3, 3, 9, 8)
-    lcols_oh = y[:,:,:,270:336].view(-1, 3, 3, 6, 11)
-    
+    sizes_oh = y[:, :, :, :99].view(-1, 3, 3, 9, 11) 
+    cols_oh = y[:, :, :, 99:198].view(-1, 3, 3, 9, 11)
+    types_oh = y[:, :, :, 198:270].view(-1, 3, 3, 9, 8)
+    lcols_oh = y[:, :, :, 270:336].view(-1, 3, 3, 6, 11)
+
     sizes_oh = F.one_hot(sizes_oh.argmax(4), num_classes=11)
     cols_oh = F.one_hot(cols_oh.argmax(4), num_classes=11)
     types_oh = F.one_hot(types_oh.argmax(4), num_classes=8)
     lcols_oh = F.one_hot(lcols_oh.argmax(4), num_classes=11)
-    
+
     #then, compute rules present in the hard assignments
     #compute attribute sets in one-hot encoding: result should have shape (64,3,3,4,10)
-    attr_sets = torch.Tensor(64,3,3,6,10)
-    panel_positions = torch.Tensor(64,3,3,2,10)
-    
-    panel_positions[:,:,:,0] = torch.cat((torch.argmax(sizes_oh, dim=4), torch.zeros((64,3,3,1), dtype=torch.long, device=device)), axis=3) #(64,3,3,10)
-    panel_positions[:,:,:,1] = torch.cat((torch.argmax(lcols_oh, dim=4), torch.zeros((64,3,3,4), dtype=torch.long, device=device)), axis=3) #(64,3,3,10)
-    
+    attr_sets = torch.Tensor(64, 3, 3, 6, 10)
+    panel_positions = torch.Tensor(64, 3, 3, 2, 10)
+
+    panel_positions[:, :, :, 0] = torch.cat((torch.argmax(sizes_oh, dim=4), torch.zeros((64,3,3,1), dtype=torch.long, device=device)), axis=3) #(64,3,3,10)
+    panel_positions[:, :, :, 1] = torch.cat((torch.argmax(lcols_oh, dim=4), torch.zeros((64,3,3,4), dtype=torch.long, device=device)), axis=3) #(64,3,3,10)
+
     attr_sets[:,:,:,0] = torch.sum(sizes_oh, dim=3)[:,:,:,1:]
     attr_sets[:,:,:,1] = torch.sum(cols_oh, dim=3)[:,:,:,1:]
     attr_sets[:,:,:,2] = torch.cat((torch.sum(types_oh, dim=3)[:,:,:,1:], torch.zeros((64,3,3,3), dtype=torch.long, device=device)), axis=3)
     attr_sets[:,:,:,3] = torch.sum(lcols_oh, dim=3)[:,:,:,1:]
     attr_sets[:,:,:,4:] = panel_positions
-    
+
     attr_sets[attr_sets.nonzero(as_tuple=True)] = 1 #set all non-zero elements to 1.
     attr_sets = attr_sets.long()
-    
+
     #compute rules matrix: result should have shape (64,29)
     rules = torch.Tensor(64,29)
-    
+
     #XOR, OR, AND
     cardinalities = torch.sum(attr_sets, dim=4) #(64,3,3,6)
     card_flags = torch.prod(torch.prod(cardinalities, dim=1), dim=1) #(64,6) #True if set is non-empty
@@ -107,7 +107,7 @@ def rule_metrics(x, x_rules, device):
     xors = torch.logical_xor(attr_sets[:,:,0].bool(), attr_sets[:,:,1].bool()).long() #(64,3,6,10)
     ors = torch.logical_or(attr_sets[:,:,0].bool(), attr_sets[:,:,1].bool()).long() #(64,3,6,10)
     ands = torch.logical_and(attr_sets[:,:,0].bool(), attr_sets[:,:,1].bool()).long() #(64,3,6,10)
-    
+
     #check if constant
     full_ors = torch.logical_or(attr_sets[:,:,2].bool(), ors.bool()).long() #(64,3,6,10)
     full_ors_card_flags_1 = torch.prod(torch.eq(torch.sum(full_ors, dim=3), 1).long(), dim=1) #(64,6) checks if the full_ors have 1 element => implies constant rule
@@ -141,7 +141,7 @@ def rule_metrics(x, x_rules, device):
     aux = torch.mul(card_flags_1, full_ors_card_flags) #intermediate product to save computation
     union_r = torch.mul(aux, union_flag) #(64,6)
     progr_r = torch.mul(aux, progr_flag) #(64,6)
-    
+
     #NUMBER PROGR, NUMBER UNION
     num_sets = cardinalities[:,:,:,4] #(64,3,3)
     num_avg = torch.true_divide(torch.sum(num_sets,dim=(1,2)), 9)
