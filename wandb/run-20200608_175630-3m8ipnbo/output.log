@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 311, in <module>
+    train_loss, train_acc, train_sens, train_spec = train()
+  File "train_gnn.py", line 146, in train
+    preds = torch.argmax(torch.cat(((1-logits).view(params['BATCH_SIZE'], 29, 1), logits.view(params['BATCH_SIZE'], 29, 1)), dim=2), dim=2)
+RuntimeError: shape '[2000, 29, 1]' is invalid for input of size 23200

@@ -1,0 +1,11 @@
+/opt/conda/conda-bld/pytorch_1587428266983/work/aten/src/ATen/native/BinaryOps.cpp:81: UserWarning: Integer division of tensors using div or / is deprecated, and in a future release div will perform true division as in Python 3. Use true_divide or floor_divide (// in Python) instead.
+Epoch 0, Train Loss: 586.71, Val Loss: 437.06, Test Loss: 436.18
+Epoch 1, Train Loss: 404.54, Val Loss: 386.39, Test Loss: 384.94
+Epoch 2, Train Loss: 367.28, Val Loss: 364.06, Test Loss: 362.46
+Epoch 3, Train Loss: 347.99, Val Loss: 349.41, Test Loss: 348.01
+Epoch 4, Train Loss: 335.69, Val Loss: 341.99, Test Loss: 339.88
+Epoch 5, Train Loss: 326.46, Val Loss: 334.36, Test Loss: 332.62
+Epoch 6, Train Loss: 319.33, Val Loss: 328.96, Test Loss: 327.62
+Epoch 7, Train Loss: 313.31, Val Loss: 325.27, Test Loss: 323.69
+Epoch 8, Train Loss: 308.36, Val Loss: 323.26, Test Loss: 321.35
+Epoch 9, Train Loss: 304.40, Val Loss: 321.08, Test Loss: 319.99

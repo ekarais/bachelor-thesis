@@ -1,0 +1,6 @@
+Epoch 0, Train Loss: 604.02, Val Loss: 544.07, Test Loss: 545.61
+Epoch 1, Train Loss: 542.45, Val Loss: 544.75, Test Loss: 545.22
+Epoch 2, Train Loss: 540.75, Val Loss: 546.31, Test Loss: 547.07
+Epoch 3, Train Loss: 541.36, Val Loss: 545.89, Test Loss: 545.87
+Epoch 4, Train Loss: 540.58, Val Loss: 538.35, Test Loss: 539.57
+Epoch 5, Train Loss: 541.90, Val Loss: 545.19, Test Loss: 546.19

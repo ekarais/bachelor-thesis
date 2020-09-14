@@ -1,0 +1,29 @@
+Epoch 0, Train Loss: 3166.57, Val Loss: 57.19, Test Loss: 58.29
+Warning: Error detected in EmbeddingBackward. Traceback of forward call that caused the error:
+  File "train_generator_graded.py", line 267, in <module>
+    train_loss, train_acc = train()
+  File "train_generator_graded.py", line 89, in train
+    logits = model(x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/architectures/fcns.py", line 40, in forward
+    x = self.emb(x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/sparse.py", line 114, in forward
+    self.norm_type, self.scale_grad_by_freq, self.sparse)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 1724, in embedding
+    return torch.embedding(weight, input, padding_idx, scale_grad_by_freq, sparse)
+ (print_stack at /opt/conda/conda-bld/pytorch_1587428266983/work/torch/csrc/autograd/python_anomaly_mode.cpp:60)
+Traceback (most recent call last):
+  File "train_generator_graded.py", line 267, in <module>
+    train_loss, train_acc = train()
+  File "train_generator_graded.py", line 107, in train
+    loss.backward()
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/tensor.py", line 198, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/autograd/__init__.py", line 100, in backward
+    allow_unreachable=True)  # allow_unreachable flag
+RuntimeError: CUDA error: an illegal memory access was encountered (operator() at /opt/conda/conda-bld/pytorch_1587428266983/work/aten/src/ATen/native/cuda/CUDAScalar.cu:19)
+frame #0: c10::Error::Error(c10::SourceLocation, std::string const&) + 0x4e (0x7f9047ac6b5e in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x210b2e3 (0x7f9049dfe2e3 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/sit

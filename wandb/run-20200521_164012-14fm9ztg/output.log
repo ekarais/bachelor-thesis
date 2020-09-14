@@ -1,0 +1,6 @@
+Initialized dataset with  64000  samples.
+Epoch 0, Train Loss: 522.12, Test Loss: 412.50
+Traceback (most recent call last):
+  File "vae.py", line 291, in <module>
+    if best_val_loss > val_loss:
+NameError: name 'best_val_loss' is not defined

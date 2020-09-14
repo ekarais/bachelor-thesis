@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 278, in <module>
+    plt.bar(torch.arange(29), test_acc_per_rule)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/matplotlib/pyplot.py", line 2441, in bar
+    **({"data": data} if data is not None else {}), **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/matplotlib/__init__.py", line 1599, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/matplotlib/axes/_axes.py", line 2374, in bar
+    np.atleast_1d(x), height, width, y, linewidth)
+  File "<__array_function__ internals>", line 6, in broadcast_arrays
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/numpy/lib/stride_tricks.py", line 262, in broadcast_arrays
+    args = [np.array(_m, copy=False, subok=subok) for _m in args]
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/numpy/lib/stride_tricks.py", line 262, in <listcomp>
+    args = [np.array(_m, copy=False, subok=subok) for _m in args]
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/tensor.py", line 492, in __array__
+    return self.numpy()
+TypeError: can't convert cuda:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.

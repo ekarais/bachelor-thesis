@@ -1,0 +1,39 @@
+Warning: Error detected in torch::autograd::GraphRoot. Traceback of forward call that caused the error:
+  File "train_generator.py", line 268, in <module>
+    train_loss, train_acc = train()
+  File "train_generator.py", line 108, in train
+    loss.backward()
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/tensor.py", line 198, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/autograd/__init__.py", line 100, in backward
+    allow_unreachable=True)  # allow_unreachable flag
+ (print_stack at /opt/conda/conda-bld/pytorch_1587428266983/work/torch/csrc/autograd/python_anomaly_mode.cpp:60)
+Traceback (most recent call last):
+  File "train_generator.py", line 268, in <module>
+    train_loss, train_acc = train()
+  File "train_generator.py", line 108, in train
+    loss.backward()
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/tensor.py", line 198, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/autograd/__init__.py", line 100, in backward
+    allow_unreachable=True)  # allow_unreachable flag
+RuntimeError: CUDA error: an illegal memory access was encountered (operator() at /opt/conda/conda-bld/pytorch_1587428266983/work/aten/src/ATen/native/cuda/CUDAScalar.cu:19)
+frame #0: c10::Error::Error(c10::SourceLocation, std::string const&) + 0x4e (0x7f286b8f9b5e in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x210b2e3 (0x7f286dc312e3 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: at::native::_local_scalar_dense_cuda(at::Tensor const&) + 0x27 (0x7f286dc329e7 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: <unknown function> + 0xdca8e0 (0x7f286c8f08e0 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xe241fd (0x7f289750f1fd in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: <unknown function> + 0x27f3bc9 (0x7f2898edebc9 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: <unknown function> + 0xe241fd (0x7f289750f1fd in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: at::native::item(at::Tensor const&) + 0xc9c (0x7f289720d91c in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #8: <unknown function> + 0xe9ae40 (0x7f2897585e40 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #9: <unknown function> + 0x283f5cb (0x7f2898f2a5cb in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #10: <unknown function> + 0xe241fd (0x7f289750f1fd in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #11: torch::autograd::Engine::evaluate_function(std::shared_ptr<torch::autograd::GraphTask>&, torch::autograd::Node*, torch::autograd::InputBuffer&) + 0xc4c (0x7f28991cfa6c in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #12: torch::autograd::Engine::thread_main(std::shared_ptr<torch::autograd::GraphTask> const&, bool) + 0x3d2 (0x7f28991d12f2 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #13: torch::autograd::Engine::thread_init(int) + 0x39 (0x7f28991c9969 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #14: torch::autograd::python::PythonEngine::thread_init(int) + 0x38 (0x7f289c510558 in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/libtorch_python.so)
+frame #15: <unknown function> + 0xc819d (0x7f289ef6719d in /home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/lib/../../../.././libstdc++.so.6)
+frame #16: <unknown function> + 0x76db (0x7f28bfa5f6db in /lib/x86_64-linux-gnu/libpthread.so.0)
+frame #17: clone + 0x3f (0x7f28bf788a3f in /lib/x86_64-linux-gnu/libc.so.6)
+

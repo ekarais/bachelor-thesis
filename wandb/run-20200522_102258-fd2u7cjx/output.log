@@ -1,0 +1,10 @@
+Initialized dataset with  64000  samples.
+Epoch 0, Train Loss: 0.01, Val Loss: 0.06, Test Loss: 0.06
+Epoch 1, Train Loss: 0.01, Val Loss: 0.06, Test Loss: 0.05
+Epoch 2, Train Loss: 0.01, Val Loss: 0.05, Test Loss: 0.05
+Epoch 3, Train Loss: 0.01, Val Loss: 0.05, Test Loss: 0.05
+Epoch 4, Train Loss: 0.01, Val Loss: 0.05, Test Loss: 0.05
+Epoch 5, Train Loss: 0.01, Val Loss: 0.05, Test Loss: 0.05
+Epoch 6, Train Loss: 0.01, Val Loss: 0.05, Test Loss: 0.05
+Epoch 7, Train Loss: 0.01, Val Loss: 0.05, Test Loss: 0.05
+Epoch 8, Train Loss: 0.01, Val Loss: 0.05, Test Loss: 0.05

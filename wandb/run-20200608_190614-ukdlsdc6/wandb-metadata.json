@@ -1,0 +1,26 @@
+{
+    "root": "/home/ege/Documents/bthesis/bachelor-thesis.git",
+    "program": "train_gnn.py",
+    "git": {
+        "remote": "https://github.com/ekarais/bachelor-thesis.git",
+        "commit": "eeb01f700a4905ea2edeb9c36538a25ec0c46063"
+    },
+    "email": "egek@student.ethz.ch",
+    "startedAt": "2020-06-08T19:06:14.977496",
+    "host": "gelibolu",
+    "username": "ege",
+    "executable": "/home/ege/miniconda3/envs/bthesis/bin/python",
+    "os": "Linux-5.3.0-53-generic-x86_64-with-debian-buster-sid",
+    "python": "3.7.7",
+    "gpu": "GeForce RTX 2070 SUPER",
+    "gpu_count": 1,
+    "cpu_count": 16,
+    "cuda": "10.2.89",
+    "args": [],
+    "state": "killed",
+    "jobType": null,
+    "mode": "run",
+    "project": "bachelor-thesis-gnn",
+    "heartbeatAt": "2020-06-08T19:19:12.736465",
+    "exitcode": 255
+}

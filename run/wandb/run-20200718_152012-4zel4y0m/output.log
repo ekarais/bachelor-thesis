@@ -1,0 +1,52 @@
+Error importing optional module plotly.tools
+Traceback (most recent call last):
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/util.py", line 121, in get_module
+    return import_module(name)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'plotly'
+[34m[1mwandb[0m: [32m[41mERROR[0m plotly is required to log interactive plots, install with: pip install plotly or convert the plot to an image with `wandb.Image(plt)`
+Traceback (most recent call last):
+  File "train_gnn.py", line 266, in <module>
+    wandb.log({"chart": plt})
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/__init__.py", line 767, in log
+    run.log(row, commit, step, sync, *args, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/wandb_run.py", line 673, in log
+    self.history.add(row, *args, step=step, commit=commit, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/history.py", line 139, in add
+    self._write()
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/history.py", line 244, in _write
+    self._transform()
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/history.py", line 225, in _transform
+    self.row = data_types.history_dict_to_json(self._run, self.row)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/data_types.py", line 1696, in history_dict_to_json
+    payload[key] = val_to_json(run, key, val, step=step)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/data_types.py", line 1727, in val_to_json
+    val = Plotly.make_plot_media(val)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/data_types.py", line 1277, in make_plot_media
+    "plotly.tools", required="plotly is required to log interactive plots, install with: pip install plotly or convert the plot to an image with `wandb.Image(plt)`")
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/util.py", line 128, in get_module
+    raise wandb.Error(required)
+wandb.core.Error: plotly is required to log interactive plots, install with: pip install plotly or convert the plot to an image with `wandb.Image(plt)`
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/history.py", line 244, in _write
+    self._transform()
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/history.py", line 225, in _transform
+    self.row = data_types.history_dict_to_json(self._run, self.row)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/data_types.py", line 1696, in history_dict_to_json
+    payload[key] = val_to_json(run, key, val, step=step)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/data_types.py", line 1727, in val_to_json
+    val = Plotly.make_plot_media(val)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/data_types.py", line 1277, in make_plot_media
+    "plotly.tools", required="plotly is required to log interactive plots, install with: pip install plotly or convert the plot to an image with `wandb.Image(plt)`")
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/wandb/util.py", line 128, in get_module
+    raise wandb.Error(required)
+wandb.core.Error: plotly is required to log interactive plots, install with: pip install plotly or convert the plot to an image with `wandb.Image(plt)`

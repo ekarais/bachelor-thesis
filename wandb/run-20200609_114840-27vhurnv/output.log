@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 256, in <module>
+    train_loss, train_acc, train_sens, train_spec = train()
+  File "train_gnn.py", line 93, in train
+    logits = model(data)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/gnns.py", line 79, in forward
+    x, edge_index, batch = avg_pool(self.row_cluster, Data(x=x, edge_index=edge_index))
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch_geometric/nn/pool/avg_pool.py", line 60, in avg_pool
+    x = None if data.x is None else _avg_pool_x(cluster, data.x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch_geometric/nn/pool/avg_pool.py", line 9, in _avg_pool_x
+    return scatter(x, cluster, dim=0, dim_size=size, reduce='mean')
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch_scatter/scatter.py", line 154, in scatter
+    return scatter_mean(src, index, dim, out, dim_size)
+RuntimeError: The following operation failed in the TorchScript interpreter.
+Traceback of TorchScript (most recent call last):
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch_scatter/scatter.py", line 22, in scatter_mean
+            size[dim] = int(index.max()) + 1
+        out = torch.zeros(size, dtype=src.dtype, device=src.device)
+        return out.scatter_add_(dim, index, src)
+               ~~~~~~~~~~~~~~~~ <--- HERE
+    else:
+        return out.scatter_add_(dim, index, src)
+RuntimeError: Expected object of device type cuda but got device type cpu for argument #3 'index' in call to _th_scatter_add_
+

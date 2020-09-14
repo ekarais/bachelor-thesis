@@ -24,20 +24,21 @@ import string
 #np.random.seed(42)
 #plt.rcParams["figure.figsize"] = (1,1)
 
-def get_random_triples(num=None, seed=None):
-    #setting seed for debugging
+def get_random_triples(num=None, seed=None, no_union=False):
+    # set seed for debugging
     if seed is not None:
         np.random.seed(seed)
     
-    #setting the number of triples
+    # set the number of triples: uniformly sampled from {1, 2, 3, 4} as in the paper. Note that we could have up to 6 triples in a PGM.
     if num is None:
         num = 1 + np.random.choice(4)
     
-    #flags will constrain the set of all combinations to the set of possible combinations
+    # flags will constrain the set of all triple combinations to the set of valid combinations. flags[i] == True iff a triple of the type map[i]
+    # has not been selected yet.
     shape_position_X = False
     flags = [True, True, True, True, True, True]
 
-    #mapping
+    # mapping
     map = [['shape', 'size'],
         ['shape', 'color'],
         ['shape', 'position/number'],
@@ -46,52 +47,75 @@ def get_random_triples(num=None, seed=None):
         ['line', 'type']]
         
 
-    #to be returned    
+    # to be returned
     triples = []
 
-    #other initializations
+    # other initializations
     b_probs = [0.5, 0.5]
 
     for i in range(num):
+        # select the "type" of the new triple uniformly at random from all the remaining types left.
         probs = np.multiply(flags, np.ones(6)/np.sum(flags))
-        idx = np.random.choice(6,1, p=probs)[0].astype(int)
+        idx = np.random.choice(6, 1, p=probs)[0].astype(int)
         flags[idx] = False
-
+        
+        # handle the mutual exclusiveness of shape-position and shape-number.
         if map[idx][1] == 'position/number':
             
             if np.random.choice(2, p=b_probs):
                 map[idx][1] = 'position'
-                shape_position_X = True  
+                shape_position_X = True
             else:
                 map[idx][1] = 'number'
 
         triple = [map[idx][0], map[idx][1]]
+
+        # get the set of possible relations we can choose from to append to the chosen triple type
         relations = triples_[map[idx][0]][map[idx][1]]
         
-        if triple == ['line', 'color'] and (not flags[5]):
-            r_probs = [0.5, 0, 0, 0, 0.5]
+        # determine the conditional distribution to sample from the set of relations, depending on
+        # the type of the triple and the triples that we have already sampled.
 
-        elif triple[0] == 'shape' and triple[1] in ['size', 'color', 'type'] and shape_position_X:
-            
-            #shape-type does not have progression
-            if triple[1] == 'type':
-                r_probs = [0, 0, 0, 1]
+        ## If a triple with type = line-position is already present, we only allow line-color-[progression|union]
+        if triple == ['line', 'color'] and (not flags[5]):
+            if no_union:
+                r_probs = [1, 0, 0, 0, 0]
             else:
                 r_probs = [0.5, 0, 0, 0, 0.5]
-        else:
-            r_probs = np.ones(len(relations)) / len(relations) #uniform
+
+        ## If a triple with type = shape-position is already present, we disallow triples of the form shape-[size|color|type]-[xor|or|and]
+        elif triple[0] == 'shape' and triple[1] in ['size', 'color', 'type'] and shape_position_X:
+            if no_union:
+                r_probs = [1, 0, 0, 0, 0]
+            else:
+                r_probs = [0.5, 0, 0, 0, 0.5]
         
+        else:
+            if no_union:
+                #if len(relations) == 3, the last relation in the array is not union, else it is.
+                if len(relations) == 3:
+                    r_probs = np.ones(len(relations)) / len(relations) #uniform
+                else:
+                    r_probs = np.ones(len(relations)) / (len(relations)-1) #unfirom over all relations other than union
+                    r_probs[-1] = 0 #union gets zero probability
+            else:
+                r_probs = np.ones(len(relations)) / len(relations) #uniform
+        
+        # sample a relation according to the computed conditional distribution and append the complete
+        # triple to the list of sampled triples.
         r_idx = np.random.choice(len(relations), 1, p=r_probs)[0].astype(int) #?
         relation = relations[r_idx]
         triple.append(relation)
 
-        #line_color_set and line_type_X can't be simultaneously present
+        # Set flags and distributions to help determine the next triple.
+
+        ## If a triple = line-color-[xor|or|and] is sampled, we disallow any triple with type line-position.
         if triple[:2] == ['line', 'color'] and triple[2] in ['XOR', 'OR', 'AND']:
             flags[5] = False
         
-        #shape_sct_set and shape_position can't be simultaneously present
+        ## If a triple with form shape-[size|color|type]-[xor|or|and] is sampled, we disallow triples with type = shape-position . 
         if (triple[0] == 'shape') and (triple[1] in ['size', 'color', 'type']) and (triple[2] in ['XOR', 'OR', 'AND']):
-            b_probs = [1,0]
+            b_probs = [1, 0]
 
         
         triples.append(triple)
@@ -148,16 +172,19 @@ def get_value_sets(relation, n, lb=1):
     Returns a list containing 9 numpy arrays.
     '''
 
-    value_sets = [[],[],[],[],[],[],[],[],[]]
-    u_values = 1 + (lb-1) + np.random.choice(n-(lb-1), 3, replace=False) #only used for the union case
-    permutations = np.array([[0,1,2],
-                             [0,2,1],
-                             [1,0,2],
-                             [1,2,0],
-                             [2,0,1],
-                             [2,1,0]])
+    value_sets = [[], [], [], [], [], [], [], [], []]
+
+    # u_values, permutations and three_unique_permutations are only used if relation = union.
+    u_values = 1 + (lb-1) + np.random.choice(n-(lb-1), 3, replace=False) 
+    permutations = np.array([[0, 1, 2],
+                             [0, 2, 1],
+                             [1, 0, 2],
+                             [1, 2, 0],
+                             [2, 0, 1],
+                             [2, 1, 0]])
     three_unique_permutations = permutations[np.random.choice(6,3, replace=False)]
-    values = [[],[],[]]
+
+    values = [[], [], []]
 
     for i in range(3):
 
@@ -170,7 +197,8 @@ def get_value_sets(relation, n, lb=1):
             values[0], values[1] = get_non_identical_sets(n)
             #if the sets are disjunct, make them non-disjunct
             if len(set(values[0]).intersection(set(values[1]))) == 0:
-                #edge-case: the modification in the else clause would make the sets identical
+            
+                #if the sets are disjunct singletons, the modification in the else clause would make 'em identical
                 if values[0].size == values[1].size and values[0].size == 1:
                     values[1] = np.concatenate((values[0], values[1]))
                 else:
@@ -182,7 +210,8 @@ def get_value_sets(relation, n, lb=1):
             values[0], values[1] = get_non_identical_sets(n)
             #if the sets are disjunct, make them non-disjunct
             if len(set(values[0]).intersection(set(values[1]))) == 0:
-                #edge-case: the modification in the else clause would make the sets identical
+
+                #if the sets are disjunct singletons, the modification in the else clause would make 'em identical
                 if values[0].size == values[1].size and values[0].size == 1:
                     values[1] = np.concatenate((values[0], values[1]))
                 else:
@@ -193,7 +222,8 @@ def get_value_sets(relation, n, lb=1):
             values[0], values[1] = get_non_identical_sets(n)
             #if the sets are disjunct, make them non-disjunct
             if len(set(values[0]).intersection(set(values[1]))) == 0:
-                #edge-case: the modification in the else clause would make the sets identical
+
+                #if the sets are disjunct singletons, the modification in the else clause would make 'em identical
                 if values[0].size == values[1].size and values[0].size == 1:
                     values[1] = np.concatenate((values[0], values[1]))
                 else:
@@ -208,8 +238,9 @@ def get_value_sets(relation, n, lb=1):
 
         #randomizing the list order
         values[2] = values[2][np.random.choice(values[2].size, values[2].size, replace=False)]
+        
         for j in range(3):
-            value_sets[3*i+j] = values[j] 
+            value_sets[3*i+j] = values[j]
 
     return value_sets
 
@@ -339,18 +370,22 @@ def generate_RPM_(triples=None):
 
 def generate_RPM(triples=None):
     
+    # If no triples are passed to the function, generate your own.
     if triples is None:
         triples = get_random_triples()
 
-    #print(triples)
+    # Separate shape/line triples, insert special value if no shape/line triple exists.
     shape_triples, line_triples = process_triples(triples)
-    shape_triples = [[-1,-1,-1]] if shape_triples == [] else shape_triples
-    line_triples = [[-1,-1,-1]] if line_triples == [] else line_triples
-    shape_values = [[],[],[]]
+    shape_triples = [[-1, -1, -1]] if shape_triples == [] else shape_triples
+    line_triples = [[-1, -1, -1]] if line_triples == [] else line_triples
+    
+    # shape_values[i][j][k] describes the value of attribute i for the k-th object in the j-th grid cell.
+    shape_values = [[], [], []]
 
-    #DEALING WITH RELATIONS IN [_, shape, [size|color|type]]
+    # sampling values for triples of type (shape, [size|color|type], relation)
     for triple in shape_triples:
         if triple[1] in ['size', 'color', 'type']:
+            # n is the cardinality of the set of values that size/color/type can take for shapes.
             n = attr_domains_[triple[1]]['shape'].size
             value_sets = get_value_sets(triple[2], n)
 
@@ -362,12 +397,14 @@ def generate_RPM(triples=None):
                 shape_values[2] = value_sets
 
     
-    #pre-sampling constant values for size/color/type to be used if these attributes aren't present in the triples
+    # pre-sampling constant values for size/color/type to be used if these attributes aren't present in the triples
     attribute_constants = [1+np.random.choice(attr_domains_['size']['shape'].size),
         1+np.random.choice(attr_domains_['color']['shape'].size),
         1+np.random.choice(attr_domains_['type']['shape'].size)]
 
-    #DEALING WITH THE REMAINING RELATION IN [_, shape, [number|position]], OR THE ABSENCE THEREOF
+    # sampling values for the triple of type (shape, [number|position], relation) if it exists
+    ## num_element denotes the minimum number of objects that will be present in any grid cell. This number
+    ## is lower-bounded by the cardinality of the largest value set.
     num_elements = 0
     for value_sets in shape_values:
         for set in value_sets:
@@ -377,12 +414,12 @@ def generate_RPM(triples=None):
     shape_matrices = []
     positions = np.random.choice(9, 9, replace=False)
 
-    
-
+    # Case 1: a triple (shape, number, relation) exists
     if shape_triples[-1][1] == 'number':
         values_per_panel = get_value_sets(shape_triples[-1][2], 9, lb=num_elements)
         positions_per_panel = [positions[:values_per_panel[i][0]] for i in range(9)]
 
+    # Case 2: a triple (shape, position, relation) exists
     elif shape_triples[-1][1] == 'position':
         values_per_panel = get_value_sets(shape_triples[-1][2], 9)
         
@@ -392,24 +429,26 @@ def generate_RPM(triples=None):
         
         positions_per_panel = values_per_panel
     
+    # Case 3: otherwise
     else:
-        num_elements = np.random.choice(10) if num_elements == 0 else num_elements #making sure some shapes my appear even if there are no shape relations
+        # making sure some shapes my appear even if there are no shape relations
+        num_elements = np.random.choice(10) if num_elements == 0 else num_elements
         values_per_panel = [[num_elements] for i in range(9)]
         positions_per_panel = [positions[:values_per_panel[i][0]] for i in range(9)]
 
     for i in range(9):
-        M = np.zeros((9,3))
+        M = np.zeros((9, 3))
         for a in range(3):
             if len(shape_values[a]) > 0:
                 values = shape_values[a][i]
                 #Assign each value to one object
-                M[positions_per_panel[i][:values.size],a] = values
+                M[positions_per_panel[i][:values.size], a] = values
                 #For every remaining object, assign one value from the value set at random.
-                M[positions_per_panel[i][values.size:positions_per_panel[i].size],a] \
+                M[positions_per_panel[i][values.size:positions_per_panel[i].size], a] \
                     = values[np.random.choice(values.size, positions_per_panel[i].size - values.size)]
                 
             else:
-                M[positions_per_panel[i],a] = attribute_constants[a]
+                M[positions_per_panel[i], a] = attribute_constants[a]
                     
         
         shape_matrices.append(M.astype(int))
@@ -462,7 +501,7 @@ def generate_RPM(triples=None):
                 #Assign each value to one object
                 v[types[:values.size]] = values
                 #For every remaining object, assign one value from the value set at random.
-                v[types[values.size:num_types]] = values[np.random.choice(values.size,num_types - values.size)]
+                v[types[values.size:num_types]] = values[np.random.choice(values.size, num_types - values.size)]
                 
             else:
                 v[types] = color_constant
@@ -470,7 +509,7 @@ def generate_RPM(triples=None):
             
             line_vectors.append(v.astype(int))
 
-    #PUTTING THE SHAPE RELATIONS AND LINE RELATIONS TOGETHER 
+    # concatenate shape and line instances in a single data structure.
     RPM = empty_RPM()
     for i in range(9):
         RPM[i]['shapes'] = shape_matrices[i]
@@ -561,6 +600,8 @@ def render(RPM, name=None, directory='./'):
 
     else:
         plt.savefig(directory + name + '.png')
+
+    plt.close()
 
 def to_npvector(RPM, onehot=False):
     
@@ -694,8 +735,8 @@ triples__ = [[objects[0], attributes[0], relations[0]], #shape, size, progressio
             [objects[0], attributes[1], relations[2]],  #shape, color, OR
             [objects[0], attributes[1], relations[3]],  #shape, color, AND
             [objects[0], attributes[1], relations[4]],  #shape, color, union
-            [objects[0], attributes[2], relations[0]],  #shape, number, pogression
-            [objects[0], attributes[2], relations[4]],  #shape, number, unrion
+            [objects[0], attributes[2], relations[0]],  #shape, number, progression
+            [objects[0], attributes[2], relations[4]],  #shape, number, union
             [objects[0], attributes[3], relations[1]],  #shape, position, XOR
             [objects[0], attributes[3], relations[2]],  #shape, position, OR
             [objects[0], attributes[3], relations[3]],  #shape, position, AND
@@ -720,7 +761,7 @@ triples_ = dict([
         ('color', ['progression', 'XOR', 'OR', 'AND', 'union']),
         ('number', ['progression', 'union']),
         ('position', ['XOR', 'OR', 'AND']),
-        ('type', ['XOR', 'OR', 'AND', 'union'])
+        ('type', ['progression', 'XOR', 'OR', 'AND', 'union'])
     ])),
     ('line', dict([
         ('color', ['progression', 'XOR', 'OR', 'AND', 'union']),
@@ -767,16 +808,24 @@ attr_domains_ = {
 
 def main(argv):
     
+    # Set program variables onehot (flag that controls if the PGMs will be stored in one-hot format or in graded format)
+    # and num_samples (controls the number of samples to be generated)
+    augment = False
     onehot = False
+    no_union = False
     num_samples = 10
-    opts, _ = getopt.getopt(argv, "on:", ["onehot", "num_samples="])
+    opts, _ = getopt.getopt(argv, "auon:", ["augmented", "no_union", "onehot", "num_samples="])
     for opt, arg in opts:
+        if opt in ('-u', '--no_union'):
+            no_union = True
         if opt in ('-o', '--onehot'):
             onehot = True
+        if opt in ('-a', '--augmented'):
+            augment = True
         if opt in ('-h', '--num_samples'):
             num_samples = int(arg)
 
-    
+    # Create the directory where the generated dataset will be stored.
     data_directory_prefix = '/home/ege/Documents/bthesis/data/'
 
     if onehot:
@@ -791,7 +840,13 @@ def main(argv):
         os.mkdir(data_directory)
 
     for _ in tqdm(range(num_samples)):
-        triples = sort_triples(get_random_triples())
+        triples = sort_triples(get_random_triples(no_union=no_union))
+        ###if ['shape', 'type', 'progression'] in triples:
+        ###    print('present!')
+        # The name of a particular PGM has the following template:
+        # The first 3*n_i characters encode the triples that are present in the PGM, where the triples are sorted as defined in 
+        # sort_triples(), and n_i denotes the number of triples that are present in the i-th PGM. This is followed by an underscore
+        # and a 20-digit random digit so that PGMs with the exact same set of rules do not overwrite each other. 
         RPM_name = ''
         for triple in triples:
             RPM_name += str(objects.index(triple[0]))
@@ -799,14 +854,34 @@ def main(argv):
             RPM_name += str(relations.index(triple[2]))
         rand_suffix = string.ascii_lowercase
         RPM_name += '_' + ''.join(random.choice(rand_suffix) for j in range(20))
+        
+        # Generate a PGM instance which contains the triples sampled by get_random_triples().
         RPM = generate_RPM(triples)
+        RPM_existence = np.zeros((9,9))
+        if augment:
+            for i in range(9):
+                cell = np.copy(RPM[i]['shapes'])
+                existence = cell[:,0]
+                existence[existence > 0] = 1 #existence[i] now encodes if there is a shape in position i.
+                RPM_existence[i] = existence.astype(float)
+
         vec = to_npvector(RPM, onehot=onehot)
         
-        #Encoding the triples present in the RPM
+        if augment:
+            vec.resize((9,336))
+            new_vec = np.zeros((9,345))
+            for i in range(9):
+                new_vec[i] = np.append(vec[i], RPM_existence[i])
+            vec = new_vec.flatten()
+
+        # Encode the triples present in the PGM; these serve as the labels in our training pipeline.
         triples_oh = np.zeros(29)
         for triple in triples:
             triples_oh[triples__.index(triple)] = 1
-
+        
+        ###if triples_oh[15] == 1:
+        ###    print('also present!')
+        # Save the generated PGM and the triples it contains to the data directory.
         np.save(data_directory+RPM_name, np.concatenate((vec,triples_oh)))
     
 

@@ -1,0 +1,9 @@
+Exception ignored in: <_io.FileIO name='/tmp/tmpzey1ffydwandb-media/kwkcfzao.graph.json' mode='wb' closefd=True>
+ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpzey1ffydwandb-media/kwkcfzao.graph.json'>
+Exception ignored in: <_io.FileIO name='/tmp/tmpzey1ffydwandb-media/kwkcfzao.graph.json' mode='rb' closefd=True>
+ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpzey1ffydwandb-media/kwkcfzao.graph.json'>
+Epoch 0, Train Loss: 237.45, Val Loss: 237.50, Test Loss: 237.41
+Epoch 1, Train Loss: 237.44, Val Loss: 237.50, Test Loss: 237.41
+Epoch 2, Train Loss: 237.44, Val Loss: 237.50, Test Loss: 237.41
+Epoch 3, Train Loss: 237.44, Val Loss: 237.50, Test Loss: 237.41
+Epoch 4, Train Loss: 237.44, Val Loss: 237.50, Test Loss: 237.41

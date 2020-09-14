@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "train_generator_graded.py", line 260, in <module>
+    train_loss, train_acc = train()
+  File "train_generator_graded.py", line 89, in train
+    logits = model(x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/architectures/fcns.py", line 39, in forward
+    x = F.relu(self.fc1(x))
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 1610, in linear
+    ret = torch.addmm(bias, input, weight.t())
+RuntimeError: size mismatch, m1: [64 x 95], m2: [701 x 200] at /opt/conda/conda-bld/pytorch_1587428266983/work/aten/src/THC/generic/THCTensorMathBlas.cu:283

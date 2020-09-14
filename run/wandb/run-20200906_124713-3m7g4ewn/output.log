@@ -1,0 +1,25 @@
+Epoch 0, Train Loss: 62.68, Val Loss: 52.93, Test Loss: 53.19
+Epoch 1, Train Loss: 51.84, Val Loss: 50.22, Test Loss: 50.42
+Epoch 2, Train Loss: 48.99, Val Loss: 47.35, Test Loss: 47.48
+Epoch 3, Train Loss: 45.71, Val Loss: 43.95, Test Loss: 43.99
+Epoch 4, Train Loss: 42.00, Val Loss: 40.30, Test Loss: 40.26
+Epoch 5, Train Loss: 38.24, Val Loss: 36.81, Test Loss: 36.72
+Epoch 6, Train Loss: 34.86, Val Loss: 33.82, Test Loss: 33.71
+Epoch 7, Train Loss: 32.09, Val Loss: 31.49, Test Loss: 31.37
+Epoch 8, Train Loss: 29.97, Val Loss: 29.75, Test Loss: 29.65
+Epoch 9, Train Loss: 28.39, Val Loss: 28.51, Test Loss: 28.42
+Epoch 10, Train Loss: 27.21, Val Loss: 27.57, Test Loss: 27.49
+Traceback (most recent call last):
+  File "train_generator.py", line 261, in <module>
+    train_loss, train_acc = train()
+  File "train_generator.py", line 99, in train
+    loss = loss + criterion(logits[:,198+i*8:198+(i+1)*8], torch.argmax(labels[:,198+i*8:198+(i+1)*8], dim=1))
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/loss.py", line 932, in forward
+    ignore_index=self.ignore_index, reduction=self.reduction)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 2317, in cross_entropy
+    return nll_loss(log_softmax(input, 1), target, weight, None, ignore_index, None, reduction)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 1535, in log_softmax
+    ret = input.log_softmax(dim)
+KeyboardInterrupt

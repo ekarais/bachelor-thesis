@@ -1,0 +1,10 @@
+train_gnn.py:96: UserWarning: Using a target size (torch.Size([1280, 29])) that is different to the input size (torch.Size([527, 29])) is deprecated. Please ensure they have the same size.
+  loss = F.binary_cross_entropy(logits, labels, reduction='sum')
+Traceback (most recent call last):
+  File "train_gnn.py", line 256, in <module>
+    train_loss, train_acc, train_sens, train_spec = train()
+  File "train_gnn.py", line 96, in train
+    loss = F.binary_cross_entropy(logits, labels, reduction='sum')
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 2372, in binary_cross_entropy
+    "!= input nelement ({})".format(target.numel(), input.numel()))
+ValueError: Target and input must have the same number of elements. target nelement (37120) != input nelement (15283)

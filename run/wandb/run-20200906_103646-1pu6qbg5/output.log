@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "train_generator.py", line 261, in <module>
+    train_loss, train_acc = train()
+  File "train_generator.py", line 89, in train
+    logits = model(x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/architectures/fcns.py", line 40, in forward
+    x = self.emb(x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/sparse.py", line 114, in forward
+    self.norm_type, self.scale_grad_by_freq, self.sparse)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 1724, in embedding
+    return torch.embedding(weight, input, padding_idx, scale_grad_by_freq, sparse)
+RuntimeError: Expected tensor for argument #1 'indices' to have scalar type Long; but got torch.cuda.FloatTensor instead (while checking arguments for embedding)

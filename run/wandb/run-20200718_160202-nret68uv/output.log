@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 272, in <module>
+    test_loss, test_acc_per_rule, test_acc, test_hacc, test_sens, test_spec = test()
+  File "train_gnn.py", line 226, in test
+    correct_vec += (preds == labels).item()
+ValueError: only one element tensors can be converted to Python scalars

@@ -1,0 +1,9 @@
+/opt/conda/conda-bld/pytorch_1587428266983/work/aten/src/ATen/native/BinaryOps.cpp:81: UserWarning: Integer division of tensors using div or / is deprecated, and in a future release div will perform true division as in Python 3. Use true_divide or floor_divide (// in Python) instead.
+Traceback (most recent call last):
+  File "train.py", line 266, in <module>
+    main(sys.argv[1:])
+  File "train.py", line 230, in main
+    val_rloss, val_divloss, val_loss, val_sens, val_spec = validate()
+  File "train.py", line 164, in validate
+    sensitivity, specificity = rule_metrics(x_sample.clone().detach(), x_rules.clone().detach(), device)
+NameError: name 'x_rules' is not defined

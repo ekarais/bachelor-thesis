@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 256, in <module>
+    train_loss, train_acc, train_sens, train_spec = train()
+  File "train_gnn.py", line 93, in train
+    logits = model(data)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/gnns.py", line 79, in forward
+    new_data = avg_pool(self.row_cluster.to(self.device), Data(x=x, edge_index=edge_index, batch=batch))
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 594, in __getattr__
+    type(self).__name__, name))
+AttributeError: 'RowNet' object has no attribute 'device'

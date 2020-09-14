@@ -1,0 +1,115 @@
+Exception ignored in: <_io.FileIO name='/tmp/tmpdjn0drs4wandb-media/2tt0gicx.graph.json' mode='wb' closefd=True>
+ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpdjn0drs4wandb-media/2tt0gicx.graph.json'>
+Exception ignored in: <_io.FileIO name='/tmp/tmpdjn0drs4wandb-media/2tt0gicx.graph.json' mode='rb' closefd=True>
+ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpdjn0drs4wandb-media/2tt0gicx.graph.json'>
+Epoch 0, Train Loss: 181.91, Val Loss: 87.34, Test Loss: 87.08
+Epoch 1, Train Loss: 87.30, Val Loss: 87.34, Test Loss: 87.08
+Epoch 2, Train Loss: 87.30, Val Loss: 87.38, Test Loss: 87.12
+Epoch 3, Train Loss: 87.30, Val Loss: 87.35, Test Loss: 87.08
+Epoch 4, Train Loss: 87.30, Val Loss: 87.39, Test Loss: 87.14
+Epoch 5, Train Loss: 87.31, Val Loss: 87.34, Test Loss: 87.07
+Epoch 6, Train Loss: 87.31, Val Loss: 87.33, Test Loss: 87.06
+Epoch 7, Train Loss: 87.30, Val Loss: 87.43, Test Loss: 87.18
+Epoch 8, Train Loss: 87.31, Val Loss: 87.50, Test Loss: 87.23
+Epoch 9, Train Loss: 87.30, Val Loss: 87.40, Test Loss: 87.12
+Epoch 10, Train Loss: 87.31, Val Loss: 87.36, Test Loss: 87.08
+Epoch 11, Train Loss: 87.30, Val Loss: 87.41, Test Loss: 87.16
+Epoch    13: reducing learning rate of group 0 to 7.5000e-02.
+Epoch 12, Train Loss: 87.31, Val Loss: 87.35, Test Loss: 87.09
+Epoch 13, Train Loss: 87.25, Val Loss: 87.36, Test Loss: 87.09
+Epoch 14, Train Loss: 87.25, Val Loss: 87.28, Test Loss: 87.02
+Epoch 15, Train Loss: 87.25, Val Loss: 87.30, Test Loss: 87.03
+Epoch 16, Train Loss: 87.24, Val Loss: 87.34, Test Loss: 87.08
+Epoch 17, Train Loss: 87.24, Val Loss: 87.40, Test Loss: 87.13
+Epoch 18, Train Loss: 87.25, Val Loss: 87.37, Test Loss: 87.11
+Epoch 19, Train Loss: 87.24, Val Loss: 87.32, Test Loss: 87.06
+Epoch    21: reducing learning rate of group 0 to 5.6250e-02.
+Epoch 20, Train Loss: 87.24, Val Loss: 87.35, Test Loss: 87.10
+Epoch 21, Train Loss: 87.20, Val Loss: 87.32, Test Loss: 87.04
+Epoch 22, Train Loss: 87.20, Val Loss: 87.27, Test Loss: 87.00
+Epoch 23, Train Loss: 87.20, Val Loss: 87.32, Test Loss: 87.06
+Epoch 24, Train Loss: 87.20, Val Loss: 87.25, Test Loss: 86.99
+Epoch 25, Train Loss: 87.19, Val Loss: 87.31, Test Loss: 87.05
+Epoch 26, Train Loss: 87.20, Val Loss: 87.28, Test Loss: 87.00
+Epoch 27, Train Loss: 87.20, Val Loss: 87.27, Test Loss: 87.00
+Epoch 28, Train Loss: 87.20, Val Loss: 87.29, Test Loss: 87.04
+Epoch 29, Train Loss: 87.20, Val Loss: 87.26, Test Loss: 87.01
+Epoch    31: reducing learning rate of group 0 to 4.2188e-02.
+Epoch 30, Train Loss: 87.20, Val Loss: 87.26, Test Loss: 86.99
+Epoch 31, Train Loss: 87.16, Val Loss: 87.24, Test Loss: 86.98
+Epoch 32, Train Loss: 87.16, Val Loss: 87.23, Test Loss: 86.96
+Epoch 33, Train Loss: 87.16, Val Loss: 87.23, Test Loss: 86.98
+Epoch 34, Train Loss: 87.16, Val Loss: 87.23, Test Loss: 86.97
+Epoch 35, Train Loss: 87.16, Val Loss: 87.23, Test Loss: 86.98
+Epoch 36, Train Loss: 87.16, Val Loss: 87.22, Test Loss: 86.95
+Epoch 37, Train Loss: 87.16, Val Loss: 87.22, Test Loss: 86.96
+Epoch 38, Train Loss: 87.16, Val Loss: 87.26, Test Loss: 87.00
+Epoch 39, Train Loss: 87.16, Val Loss: 87.26, Test Loss: 86.99
+Epoch 40, Train Loss: 87.16, Val Loss: 87.23, Test Loss: 86.95
+Epoch 41, Train Loss: 87.16, Val Loss: 87.25, Test Loss: 86.99
+Epoch    43: reducing learning rate of group 0 to 3.1641e-02.
+Epoch 42, Train Loss: 87.16, Val Loss: 87.26, Test Loss: 87.00
+Epoch 43, Train Loss: 87.13, Val Loss: 87.21, Test Loss: 86.95
+Epoch 44, Train Loss: 87.13, Val Loss: 87.19, Test Loss: 86.93
+Epoch 45, Train Loss: 87.14, Val Loss: 87.21, Test Loss: 86.95
+Epoch 46, Train Loss: 87.13, Val Loss: 87.22, Test Loss: 86.97
+Epoch 47, Train Loss: 87.13, Val Loss: 87.20, Test Loss: 86.93
+Epoch 48, Train Loss: 87.13, Val Loss: 87.20, Test Loss: 86.94
+Epoch 49, Train Loss: 87.13, Val Loss: 87.22, Test Loss: 86.96
+Epoch    51: reducing learning rate of group 0 to 2.3730e-02.
+Epoch 50, Train Loss: 87.13, Val Loss: 87.22, Test Loss: 86.95
+Epoch 51, Train Loss: 87.11, Val Loss: 87.19, Test Loss: 86.92
+Epoch 52, Train Loss: 87.11, Val Loss: 87.17, Test Loss: 86.91
+Epoch 53, Train Loss: 87.12, Val Loss: 87.18, Test Loss: 86.92
+Epoch 54, Train Loss: 87.11, Val Loss: 87.20, Test Loss: 86.93
+Epoch 55, Train Loss: 87.11, Val Loss: 87.20, Test Loss: 86.94
+Epoch 56, Train Loss: 87.11, Val Loss: 87.17, Test Loss: 86.91
+Epoch 57, Train Loss: 87.11, Val Loss: 87.20, Test Loss: 86.92
+Epoch    59: reducing learning rate of group 0 to 1.7798e-02.
+Epoch 58, Train Loss: 87.11, Val Loss: 87.18, Test Loss: 86.93
+Epoch 59, Train Loss: 87.10, Val Loss: 87.17, Test Loss: 86.91
+Epoch 60, Train Loss: 87.10, Val Loss: 87.17, Test Loss: 86.92
+Epoch 61, Train Loss: 87.10, Val Loss: 87.16, Test Loss: 86.90
+Epoch 62, Train Loss: 87.10, Val Loss: 87.17, Test Loss: 86.90
+Epoch 63, Train Loss: 87.10, Val Loss: 87.17, Test Loss: 86.91
+Epoch 64, Train Loss: 87.10, Val Loss: 87.18, Test Loss: 86.92
+Epoch 65, Train Loss: 87.10, Val Loss: 87.19, Test Loss: 86.92
+Epoch 66, Train Loss: 87.10, Val Loss: 87.17, Test Loss: 86.91
+Epoch    68: reducing learning rate of group 0 to 1.3348e-02.
+Epoch 67, Train Loss: 87.10, Val Loss: 87.21, Test Loss: 86.95
+Epoch 68, Train Loss: 87.09, Val Loss: 87.16, Test Loss: 86.89
+Epoch 69, Train Loss: 87.09, Val Loss: 87.17, Test Loss: 86.90
+Epoch 70, Train Loss: 87.09, Val Loss: 87.17, Test Loss: 86.90
+Epoch 71, Train Loss: 87.09, Val Loss: 87.17, Test Loss: 86.90
+Epoch 72, Train Loss: 87.09, Val Loss: 87.16, Test Loss: 86.90
+Epoch    74: reducing learning rate of group 0 to 1.0011e-02.
+Epoch 73, Train Loss: 87.09, Val Loss: 87.16, Test Loss: 86.89
+Epoch 74, Train Loss: 87.08, Val Loss: 87.16, Test Loss: 86.89
+Epoch 75, Train Loss: 87.08, Val Loss: 87.15, Test Loss: 86.89
+Epoch 76, Train Loss: 87.08, Val Loss: 87.15, Test Loss: 86.89
+Epoch 77, Train Loss: 87.08, Val Loss: 87.15, Test Loss: 86.89
+Epoch 78, Train Loss: 87.08, Val Loss: 87.15, Test Loss: 86.89
+Epoch 79, Train Loss: 87.08, Val Loss: 87.16, Test Loss: 86.89
+Epoch 80, Train Loss: 87.08, Val Loss: 87.16, Test Loss: 86.89
+Epoch    82: reducing learning rate of group 0 to 7.5085e-03.
+Epoch 81, Train Loss: 87.08, Val Loss: 87.15, Test Loss: 86.89
+Epoch 82, Train Loss: 87.07, Val Loss: 87.15, Test Loss: 86.89
+Epoch 83, Train Loss: 87.07, Val Loss: 87.14, Test Loss: 86.88
+Epoch 84, Train Loss: 87.07, Val Loss: 87.14, Test Loss: 86.88
+Epoch 85, Train Loss: 87.07, Val Loss: 87.14, Test Loss: 86.88
+Epoch 86, Train Loss: 87.07, Val Loss: 87.15, Test Loss: 86.89
+Epoch 87, Train Loss: 87.07, Val Loss: 87.15, Test Loss: 86.88
+Epoch 88, Train Loss: 87.07, Val Loss: 87.15, Test Loss: 86.89
+Epoch    90: reducing learning rate of group 0 to 5.6314e-03.
+Epoch 89, Train Loss: 87.07, Val Loss: 87.15, Test Loss: 86.88
+Epoch 90, Train Loss: 87.07, Val Loss: 87.14, Test Loss: 86.88
+Epoch 91, Train Loss: 87.07, Val Loss: 87.15, Test Loss: 86.88
+Epoch 92, Train Loss: 87.07, Val Loss: 87.14, Test Loss: 86.88
+Epoch 93, Train Loss: 87.07, Val Loss: 87.14, Test Loss: 86.88
+Epoch 94, Train Loss: 87.07, Val Loss: 87.14, Test Loss: 86.88
+Epoch    96: reducing learning rate of group 0 to 4.2235e-03.
+Epoch 95, Train Loss: 87.06, Val Loss: 87.14, Test Loss: 86.88
+Epoch 96, Train Loss: 87.06, Val Loss: 87.14, Test Loss: 86.88
+Epoch 97, Train Loss: 87.06, Val Loss: 87.13, Test Loss: 86.88
+Epoch 98, Train Loss: 87.06, Val Loss: 87.14, Test Loss: 86.87
+Epoch 99, Train Loss: 87.06, Val Loss: 87.14, Test Loss: 86.88

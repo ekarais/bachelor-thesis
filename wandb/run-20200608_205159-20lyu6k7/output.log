@@ -1,0 +1,12 @@
+Epoch 0, Train Loss: 9.41, Val Loss: 56.83, Test Loss: 332.14
+Epoch 1, Train Loss: 126.43, Val Loss: 9.52, Test Loss: 17.75
+Epoch 2, Train Loss: 8.52, Val Loss: 12.53, Test Loss: 80.35
+Epoch 3, Train Loss: 9.41, Val Loss: 9.88, Test Loss: 30.13
+Epoch 4, Train Loss: 8.28, Val Loss: 12.82, Test Loss: 61.52
+Epoch 5, Train Loss: 9.23, Val Loss: 13.51, Test Loss: 61.21
+Epoch 6, Train Loss: 9.48, Val Loss: 11.25, Test Loss: 32.76
+Epoch     8: reducing learning rate of group 0 to 1.8750e-05.
+Epoch 7, Train Loss: 8.61, Val Loss: 10.83, Test Loss: 64.72
+Epoch 8, Train Loss: 9.49, Val Loss: 8.40, Test Loss: 13.54
+Epoch 9, Train Loss: 7.79, Val Loss: 13.58, Test Loss: 52.85
+Epoch 10, Train Loss: 8.93, Val Loss: 8.91, Test Loss: 16.15

@@ -1,0 +1,5 @@
+Initialized dataset with  64000  samples.
+Traceback (most recent call last):
+  File "train.py", line 66, in <module>
+    encoder = vae.Encoder(params['INPUT_DIM'], params['HIDDEN_DIM'], params['LATENT_DIM'])
+NameError: name 'vae' is not defined

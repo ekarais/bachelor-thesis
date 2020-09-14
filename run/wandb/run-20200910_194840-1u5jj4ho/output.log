@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 306, in <module>
+    train_loss, train_acc, train_hacc, train_sens, train_spec = train()
+  File "train_gnn.py", line 81, in train
+    logits = model(data)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/architectures/gnns.py", line 98, in forward
+    x = F.relu(self.conv5(x, edge_index))
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch_geometric/nn/conv/gat_conv.py", line 86, in forward
+    x = self.lin(x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 1612, in linear
+    output = input.matmul(weight.t())
+RuntimeError: size mismatch, m1: [20480 x 400], m2: [200 x 200] at /opt/conda/conda-bld/pytorch_1587428266983/work/aten/src/THC/generic/THCTensorMathBlas.cu:283

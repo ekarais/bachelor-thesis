@@ -1,0 +1,26 @@
+{
+    "root": "/home/ege/Documents/bthesis/bachelor-thesis.git",
+    "program": "train_generator.py",
+    "git": {
+        "remote": "https://github.com/ekarais/bachelor-thesis.git",
+        "commit": "79cd230c29d3c802c09f79b2f7ca514bde1f0969"
+    },
+    "email": "egek@student.ethz.ch",
+    "startedAt": "2020-09-05T14:37:25.957276",
+    "host": "gelibolu",
+    "username": "ege",
+    "executable": "/home/ege/miniconda3/envs/bthesis/bin/python",
+    "os": "Linux-5.4.0-45-generic-x86_64-with-debian-buster-sid",
+    "python": "3.7.7",
+    "gpu": "GeForce RTX 2070 SUPER",
+    "gpu_count": 1,
+    "cpu_count": 16,
+    "cuda": "10.1.105",
+    "args": [],
+    "state": "finished",
+    "jobType": null,
+    "mode": "run",
+    "project": "bachelor-thesis-generate",
+    "heartbeatAt": "2020-09-05T16:36:16.854769",
+    "exitcode": 0
+}

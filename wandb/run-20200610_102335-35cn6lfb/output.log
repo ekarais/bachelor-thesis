@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 257, in <module>
+    train_loss, train_acc, train_sens, train_spec = train()
+  File "train_gnn.py", line 97, in train
+    loss = F.binary_cross_entropy(logits, labels, weight=class_weights, reduction='sum')
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/functional.py", line 2375, in binary_cross_entropy
+    new_size = _infer_size(target.size(), weight.size())
+RuntimeError: The size of tensor a (29) must match the size of tensor b (2) at non-singleton dimension 1

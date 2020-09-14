@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 259, in <module>
+    train_loss, train_acc, train_sens, train_spec = train()
+  File "train_gnn.py", line 99, in train
+    loss = criterion(logits, labels, reduction='sum')
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+TypeError: forward() got an unexpected keyword argument 'reduction'

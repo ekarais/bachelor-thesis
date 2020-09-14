@@ -1,0 +1,23 @@
+/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/plotly/matplotlylib/mpltools.py:368: MatplotlibDeprecationWarning:
+
+
+The is_frame_like function was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+
+Epoch 0, Train Loss: 32.24, Val Loss: 58.44, Test Loss: 406.12
+/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/plotly/matplotlylib/mpltools.py:368: MatplotlibDeprecationWarning:
+
+
+The is_frame_like function was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+
+Epoch 1, Train Loss: 67.47, Val Loss: 63.32, Test Loss: 299.65
+/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/plotly/matplotlylib/mpltools.py:368: MatplotlibDeprecationWarning:
+
+
+The is_frame_like function was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+
+Epoch 2, Train Loss: 55.72, Val Loss: 47.43, Test Loss: 148.80
+/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/plotly/matplotlylib/mpltools.py:368: MatplotlibDeprecationWarning:
+
+
+The is_frame_like function was deprecated in Matplotlib 3.1 and will be removed in 3.3.
+

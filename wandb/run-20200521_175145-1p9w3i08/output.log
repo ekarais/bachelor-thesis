@@ -1,0 +1,15 @@
+Initialized dataset with  64000  samples.
+Epoch 0, Train Loss: 668.35, Val Loss: 656.96, Test Loss: 652.03
+Epoch 1, Train Loss: 650.66, Val Loss: 651.04, Test Loss: 646.69
+Epoch 2, Train Loss: 643.95, Val Loss: 644.26, Test Loss: 639.77
+Epoch 3, Train Loss: 641.77, Val Loss: 644.47, Test Loss: 640.26
+Epoch 4, Train Loss: 635.02, Val Loss: 636.23, Test Loss: 632.31
+Epoch 5, Train Loss: 637.66, Val Loss: 640.19, Test Loss: 636.25
+Epoch 6, Train Loss: 632.38, Val Loss: 635.21, Test Loss: 631.13
+Epoch 7, Train Loss: 629.54, Val Loss: 634.22, Test Loss: 630.37
+Epoch 8, Train Loss: 626.99, Val Loss: 631.94, Test Loss: 627.77
+Epoch 9, Train Loss: 627.89, Val Loss: 640.17, Test Loss: 635.79
+Epoch 10, Train Loss: 625.56, Val Loss: 630.56, Test Loss: 626.60
+Epoch 11, Train Loss: 634.63, Val Loss: 631.51, Test Loss: 627.43
+Epoch 12, Train Loss: 643.72, Val Loss: 659.87, Test Loss: 654.74
+Epoch 13, Train Loss: 649.73, Val Loss: 679.84, Test Loss: 676.41

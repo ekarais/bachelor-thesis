@@ -1,0 +1,9 @@
+cpu
+Traceback (most recent call last):
+  File "train_generator.py", line 261, in <module>
+    train_loss, train_acc, train_mod_acc = train()
+  File "train_generator.py", line 118, in train
+    corr, mod_corr, tot = rule_metrics(complete_RPM.clone().detach(), rules.clone().detach(), device=device)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/data_utils.py", line 216, in rule_metrics
+    moderate_correct_vec = torch.mul(valid, correct_vec)
+RuntimeError: expected device cuda:0 but got device cpu

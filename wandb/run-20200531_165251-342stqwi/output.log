@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "train.py", line 241, in <module>
+    main(sys.argv[1:])
+  File "train.py", line 208, in main
+    train_rloss, train_divloss, train_loss, train_sens, train_spec = train()
+  File "train.py", line 112, in train
+    sensitivity, specificity = rule_metrics(x_sample, x_rules)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/data_utils.py", line 35, in rule_metrics
+    sizes_oh = F.one_hot(sizes_oh.argmax(4), num_classes=11)
+NameError: name 'F' is not defined

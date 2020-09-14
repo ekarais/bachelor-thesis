@@ -1,0 +1,9 @@
+Initialized dataset with  64000  samples.
+Traceback (most recent call last):
+  File "train_debug.py", line 236, in <module>
+    main(sys.argv[1:])
+  File "train_debug.py", line 207, in main
+    train_rloss, train_divloss, train_loss = train()
+  File "train_debug.py", line 46, in train
+    model.train()
+NameError: name 'model' is not defined

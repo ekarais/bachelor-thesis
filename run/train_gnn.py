@@ -1,37 +1,19 @@
-#!/usr/bin/env python
-# coding: utf-8
+from datetime import datetime
+import warnings
 
-# In[8]:
-
-
-import numpy as np
 import matplotlib.pyplot as plt
-import wandb
-
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
-
-from torch_geometric.data import DataLoader as GraphLoader, Data
-from torch_geometric.nn import GCNConv, global_mean_pool
+from torch.utils.data import random_split
+from torch_geometric.data import DataLoader as GraphLoader
+import wandb
 
 from data_utils import RegeneratedPGM as PGM
 from data_utils import rule_metrics, GraphPGM
-from vae import Encoder, Decoder, VAE
-from autoencoder import Autoencoder
-from gnns import GraphNeuralNet, RowNet
+from architectures.gnns import GraphNeuralNet, GraphNeuralNet_Large, GATNet, GATNetV2, GATNetV3
 
-
-from tqdm import tqdm
-from datetime import datetime
-import warnings
-import sys, getopt, os
-
-
+torch.manual_seed(0)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
 params = {'BATCH_SIZE': 2560,          # number of data points in each batch
           'N_EPOCHS' : 500,            # times to run the model on complete data
           'INPUT_DIM' : 9 * 336,     # size of each input
@@ -59,9 +41,9 @@ val_loader = GraphLoader(val_set, batch_size=params['BATCH_SIZE'])
 test_loader = GraphLoader(test_set, batch_size=params['BATCH_SIZE'])
 
 
-model = GraphNeuralNet().to(device)
+model = GATNetV3().to(device)
 optimizer = optim.Adam(model.parameters(), lr=params['lr'])
-scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.75, patience=5, verbose=True)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.75, patience=10, verbose=True)
 criterion = torch.nn.BCEWithLogitsLoss(pos_weight=torch.FloatTensor([10.6]).to(device), reduction='sum')
 
 
@@ -191,8 +173,7 @@ def validate():
 
             val_loss += loss.item()
 
-            # update the weights
-            optimizer.step()
+            
 
     accuracy = correct/total
     hard_acc = hard_correct/hard_total
@@ -212,6 +193,7 @@ def test():
     # loss of the epoch
     test_loss = 0
     
+    correct_vec = torch.zeros([29], device='cuda')
     correct = 0
     total = 0 
     
@@ -223,8 +205,12 @@ def test():
     
     true_negatives = 0
     negatives = 0
+
+    #diagnostics for the 100% bug
+    rule_frequencies = torch.zeros([29], device='cuda')
+
     with torch.no_grad():
-        for i, data in enumerate(test_loader):
+        for data in test_loader:
 
             data = data.to(device)
             labels = data.y.float()
@@ -240,6 +226,7 @@ def test():
             
             # metrics
             ## accuracy
+            correct_vec += (preds == labels).sum(dim=0)
             correct += (preds == labels).sum().item()
             total += torch.numel(labels)
 
@@ -257,21 +244,55 @@ def test():
 
             test_loss += loss.item()
 
-            # update the weights
-            optimizer.step()
+            ## diagnostics
+            rule_frequencies += labels.sum(dim=0)
 
+            
+
+    accuracy_per_rule = correct_vec/(total/29)
     accuracy = correct/total
     hard_acc = hard_correct/hard_total
     sensitivity = true_positives/positives
     specificity = true_negatives/negatives
-
+    rule_frequencies /= (total/29)
+    #print(rule_frequencies)
     #normalization
     test_loss /= len(test_set)
     
-    return test_loss, accuracy, hard_acc, sensitivity, specificity
+    return test_loss, accuracy_per_rule, accuracy, hard_acc, sensitivity, specificity
 
 
 log = True
+
+rule_names = ['SSP',
+              'SSX',
+              'SSO',
+              'SSA',
+              'SSU',
+              'SCP',
+              'SCX',
+              'SCO',
+              'SCA',
+              'SCU',
+              'SNP',
+              'SNU',
+              'SPX',
+              'SPO',
+              'SPA',
+              'STP',
+              'STX',
+              'STO',
+              'STA',
+              'STU',
+              'LCP',
+              'LCX',
+              'LCO',
+              'LCA',
+              'LCU',
+              'LPX',
+              'LPO',
+              'LPA',
+              'LPU',]
 
 if log:
     wandb.init(project="bachelor-thesis-gnn", entity='ege', config=params)
@@ -280,32 +301,47 @@ if log:
 
 
 for epoch in range(params['N_EPOCHS']):
+    
+    
     train_loss, train_acc, train_hacc, train_sens, train_spec = train()
     val_loss, val_acc, val_hacc, val_sens, val_spec = validate()
-    test_loss, test_acc, test_hacc, test_sens, test_spec = test()
+    test_loss, test_acc_per_rule, test_acc, test_hacc, test_sens, test_spec = test()
     
     scheduler.step(val_loss)
     
     if log:
-        wandb.log({
-            "Training Loss": train_loss,
-            "Training Accuracy": train_acc,
-            "Training Hard Accuracy": train_hacc,
-            "Training Sensitivity": train_sens,
-            "Training Specificity": train_spec,
-            "Validation Loss": val_loss,
-            "Validation Accuracy": val_acc,
-            "Validation Hard Accuracy": val_hacc,
-            "Validation Sensitivity": val_sens,
-            "Validation Specificity": val_spec,
-            "Test Loss": test_loss,
-            "Test Accuracy": test_acc,
-            "Test Hard Accuracy": test_hacc,
-            "Test Sensitivity": test_sens,
-            "Test Specificity": test_spec
-        })
+        
+
+        plt.figure(figsize=(20, 10))
+        plt.bar(torch.arange(29), test_acc_per_rule.cpu())
+        plt.xticks(torch.arange(29), rule_names)
+        plt.axhline(y=0.95, color='g', linestyle='-')
+        plt.ylabel('accuracy')
+        with warnings.catch_warnings():    
+            warnings.simplefilter("ignore")
+            wandb.log({
+                "Accuracy per rule": [wandb.Image(plt, caption="Accuracy per rule")],
+                "Training Loss": train_loss,
+                "Training Accuracy": train_acc,
+                "Training Hard Accuracy": train_hacc,
+                "Training Sensitivity": train_sens,
+                "Training Specificity": train_spec,
+                "Validation Loss": val_loss,
+                "Validation Accuracy": val_acc,
+                "Validation Hard Accuracy": val_hacc,
+                "Validation Sensitivity": val_sens,
+                "Validation Specificity": val_spec,
+                "Test Loss": test_loss,
+                "Test Accuracy": test_acc,
+                "Test Hard Accuracy": test_hacc,
+                "Test Sensitivity": test_sens,
+                "Test Specificity": test_spec
+            })
+        
+        plt.close()
         
     print(f'Epoch {epoch}, Train Loss: {train_loss:.2f}, Val Loss: {val_loss:.2f}, Test Loss: {test_loss:.2f}')
+    print(test_acc_per_rule)
     model_name = "gnn-" + str(datetime.now().strftime("%d_%m_%Y_%H:%M:%S")) if not log else "gnn-" + wandb.run.name    
     torch.save(model.state_dict(), models_directory + model_name + '.pth')
 

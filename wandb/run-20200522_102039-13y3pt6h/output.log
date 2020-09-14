@@ -1,0 +1,21 @@
+Initialized dataset with  64000  samples.
+Traceback (most recent call last):
+  File "train.py", line 168, in <module>
+    train_rloss, train_divloss, train_loss = train()
+  File "train.py", line 103, in train
+    x_sample, z_mu, z_var = model(x)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/vae.py", line 138, in forward
+    predicted = self.dec(x_sample)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/vae.py", line 111, in forward
+    predicted = self.custom_softmax(self.out(hidden))
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/vae.py", line 54, in forward
+    aux_3 = self.softmax(aux_2, dim=2)
+  File "/home/ege/miniconda3/envs/bthesis/lib/python3.7/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+TypeError: forward() got an unexpected keyword argument 'dim'

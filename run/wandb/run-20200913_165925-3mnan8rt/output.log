@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "train_generator_augmented.py", line 304, in <module>
+    train_loss, train_acc, train_mod_acc = train()
+  File "train_generator_augmented.py", line 137, in train
+    corr, mod_corr, tot, _ = rule_metrics(complete_RPM.clone().detach(), rules.clone().detach(), device=device)
+  File "/home/ege/Documents/bthesis/bachelor-thesis.git/data_utils.py", line 129, in rule_metrics
+    sz = torch.cat((torch.argmax(sizes_oh[:,2,2], dim=2), torch.zeros((64,1), dtype=torch.long, device=device)), axis=3) #(64,10)
+IndexError: Dimension out of range (expected to be in range of [-2, 1], but got 3)

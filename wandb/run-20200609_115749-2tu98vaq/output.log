@@ -1,0 +1,221 @@
+Epoch 0, Train Loss: 9.85, Val Loss: 8.23, Test Loss: 9.05
+Epoch 1, Train Loss: 7.77, Val Loss: 8.65, Test Loss: 15.21
+Epoch 2, Train Loss: 8.13, Val Loss: 7.54, Test Loss: 8.95
+Epoch 3, Train Loss: 7.25, Val Loss: 7.40, Test Loss: 15.02
+Epoch 4, Train Loss: 7.56, Val Loss: 7.18, Test Loss: 10.75
+Epoch 5, Train Loss: 7.08, Val Loss: 7.32, Test Loss: 12.17
+Epoch 6, Train Loss: 7.20, Val Loss: 7.23, Test Loss: 12.33
+Epoch 7, Train Loss: 6.95, Val Loss: 7.34, Test Loss: 14.53
+Epoch 8, Train Loss: 7.06, Val Loss: 7.13, Test Loss: 21.76
+Epoch 9, Train Loss: 7.58, Val Loss: 6.53, Test Loss: 7.76
+Epoch 10, Train Loss: 6.30, Val Loss: 6.49, Test Loss: 11.64
+Epoch 11, Train Loss: 6.45, Val Loss: 6.05, Test Loss: 6.97
+Epoch 12, Train Loss: 5.98, Val Loss: 6.18, Test Loss: 10.47
+Epoch 13, Train Loss: 6.19, Val Loss: 6.00, Test Loss: 8.70
+Epoch 14, Train Loss: 5.97, Val Loss: 5.78, Test Loss: 7.84
+Epoch 15, Train Loss: 5.78, Val Loss: 5.61, Test Loss: 6.67
+Epoch 16, Train Loss: 5.57, Val Loss: 5.70, Test Loss: 8.24
+Epoch 17, Train Loss: 5.60, Val Loss: 5.69, Test Loss: 10.81
+Epoch 18, Train Loss: 5.77, Val Loss: 6.00, Test Loss: 15.02
+Epoch 19, Train Loss: 6.04, Val Loss: 5.35, Test Loss: 6.14
+Epoch 20, Train Loss: 5.28, Val Loss: 5.43, Test Loss: 8.76
+Epoch 21, Train Loss: 5.45, Val Loss: 5.61, Test Loss: 10.70
+Epoch 22, Train Loss: 5.54, Val Loss: 5.33, Test Loss: 7.31
+Epoch 23, Train Loss: 5.21, Val Loss: 5.15, Test Loss: 7.62
+Epoch 24, Train Loss: 5.16, Val Loss: 5.39, Test Loss: 10.68
+Epoch 25, Train Loss: 5.35, Val Loss: 5.21, Test Loss: 9.27
+Epoch 26, Train Loss: 5.16, Val Loss: 4.90, Test Loss: 7.42
+Epoch 27, Train Loss: 4.87, Val Loss: 5.49, Test Loss: 12.53
+Epoch 28, Train Loss: 5.31, Val Loss: 4.91, Test Loss: 8.32
+Epoch 29, Train Loss: 4.82, Val Loss: 4.70, Test Loss: 8.50
+Epoch 30, Train Loss: 4.71, Val Loss: 4.87, Test Loss: 9.95
+Epoch 31, Train Loss: 4.84, Val Loss: 4.56, Test Loss: 6.99
+Epoch 32, Train Loss: 4.50, Val Loss: 4.41, Test Loss: 6.31
+Epoch 33, Train Loss: 4.39, Val Loss: 4.48, Test Loss: 8.84
+Epoch 34, Train Loss: 4.60, Val Loss: 4.34, Test Loss: 7.04
+Epoch 35, Train Loss: 4.36, Val Loss: 4.57, Test Loss: 8.48
+Epoch 36, Train Loss: 4.47, Val Loss: 4.34, Test Loss: 7.68
+Epoch 37, Train Loss: 4.34, Val Loss: 4.31, Test Loss: 8.33
+Epoch 38, Train Loss: 4.35, Val Loss: 4.28, Test Loss: 8.53
+Epoch 39, Train Loss: 4.33, Val Loss: 4.35, Test Loss: 8.31
+Epoch 40, Train Loss: 4.33, Val Loss: 4.10, Test Loss: 6.58
+Epoch 41, Train Loss: 4.10, Val Loss: 4.47, Test Loss: 11.70
+Epoch 42, Train Loss: 4.53, Val Loss: 4.54, Test Loss: 12.02
+Epoch 43, Train Loss: 4.44, Val Loss: 4.11, Test Loss: 7.10
+Epoch 44, Train Loss: 4.07, Val Loss: 4.36, Test Loss: 8.79
+Epoch 45, Train Loss: 4.26, Val Loss: 4.01, Test Loss: 6.83
+Epoch 46, Train Loss: 3.97, Val Loss: 4.05, Test Loss: 7.11
+Epoch 47, Train Loss: 3.99, Val Loss: 3.95, Test Loss: 6.25
+Epoch 48, Train Loss: 3.89, Val Loss: 4.04, Test Loss: 7.55
+Epoch 49, Train Loss: 3.99, Val Loss: 4.08, Test Loss: 8.18
+Epoch 50, Train Loss: 4.05, Val Loss: 3.84, Test Loss: 5.30
+Epoch 51, Train Loss: 3.76, Val Loss: 3.88, Test Loss: 6.46
+Epoch 52, Train Loss: 3.84, Val Loss: 3.93, Test Loss: 8.09
+Epoch 53, Train Loss: 3.92, Val Loss: 3.91, Test Loss: 7.01
+Epoch 54, Train Loss: 3.86, Val Loss: 3.95, Test Loss: 7.20
+Epoch 55, Train Loss: 3.83, Val Loss: 3.79, Test Loss: 5.52
+Epoch 56, Train Loss: 3.68, Val Loss: 3.99, Test Loss: 7.80
+Epoch 57, Train Loss: 3.86, Val Loss: 4.11, Test Loss: 9.66
+Epoch 58, Train Loss: 3.99, Val Loss: 4.10, Test Loss: 9.27
+Epoch 59, Train Loss: 3.99, Val Loss: 3.81, Test Loss: 6.62
+Epoch 60, Train Loss: 3.74, Val Loss: 3.65, Test Loss: 5.13
+Epoch 61, Train Loss: 3.59, Val Loss: 4.03, Test Loss: 7.93
+Epoch 62, Train Loss: 3.90, Val Loss: 3.77, Test Loss: 6.81
+Epoch 63, Train Loss: 3.73, Val Loss: 3.84, Test Loss: 6.98
+Epoch 64, Train Loss: 3.74, Val Loss: 3.76, Test Loss: 6.71
+Epoch 65, Train Loss: 3.69, Val Loss: 4.16, Test Loss: 9.13
+Epoch    67: reducing learning rate of group 0 to 3.7500e-04.
+Epoch 66, Train Loss: 3.97, Val Loss: 3.66, Test Loss: 5.33
+Epoch 67, Train Loss: 3.61, Val Loss: 3.65, Test Loss: 5.21
+Epoch 68, Train Loss: 3.53, Val Loss: 3.61, Test Loss: 4.79
+Epoch 69, Train Loss: 3.48, Val Loss: 3.75, Test Loss: 6.52
+Epoch 70, Train Loss: 3.62, Val Loss: 3.69, Test Loss: 5.89
+Epoch 71, Train Loss: 3.55, Val Loss: 3.82, Test Loss: 6.30
+Epoch 72, Train Loss: 3.60, Val Loss: 3.60, Test Loss: 5.24
+Epoch 73, Train Loss: 3.48, Val Loss: 3.65, Test Loss: 6.23
+Epoch 74, Train Loss: 3.56, Val Loss: 3.76, Test Loss: 6.64
+Epoch 75, Train Loss: 3.60, Val Loss: 3.66, Test Loss: 5.91
+Epoch 76, Train Loss: 3.53, Val Loss: 3.65, Test Loss: 5.95
+Epoch 77, Train Loss: 3.52, Val Loss: 3.64, Test Loss: 5.97
+Epoch    79: reducing learning rate of group 0 to 2.8125e-04.
+Epoch 78, Train Loss: 3.53, Val Loss: 3.65, Test Loss: 5.41
+Epoch 79, Train Loss: 3.47, Val Loss: 3.53, Test Loss: 4.50
+Epoch 80, Train Loss: 3.35, Val Loss: 3.52, Test Loss: 4.23
+Epoch 81, Train Loss: 3.33, Val Loss: 3.53, Test Loss: 4.27
+Epoch 82, Train Loss: 3.33, Val Loss: 3.55, Test Loss: 4.87
+Epoch 83, Train Loss: 3.37, Val Loss: 3.57, Test Loss: 5.30
+Epoch 84, Train Loss: 3.39, Val Loss: 3.54, Test Loss: 4.62
+Epoch 85, Train Loss: 3.32, Val Loss: 3.57, Test Loss: 4.89
+Epoch    87: reducing learning rate of group 0 to 2.1094e-04.
+Epoch 86, Train Loss: 3.36, Val Loss: 3.53, Test Loss: 4.53
+Epoch 87, Train Loss: 3.33, Val Loss: 3.47, Test Loss: 3.74
+Epoch 88, Train Loss: 3.23, Val Loss: 3.52, Test Loss: 4.75
+Epoch 89, Train Loss: 3.30, Val Loss: 3.49, Test Loss: 4.09
+Epoch 90, Train Loss: 3.25, Val Loss: 3.48, Test Loss: 3.87
+Epoch 91, Train Loss: 3.22, Val Loss: 3.48, Test Loss: 3.97
+Epoch 92, Train Loss: 3.22, Val Loss: 3.57, Test Loss: 5.06
+Epoch    94: reducing learning rate of group 0 to 1.5820e-04.
+Epoch 93, Train Loss: 3.31, Val Loss: 3.48, Test Loss: 4.00
+Epoch 94, Train Loss: 3.22, Val Loss: 3.47, Test Loss: 3.79
+Epoch 95, Train Loss: 3.19, Val Loss: 3.49, Test Loss: 3.94
+Epoch 96, Train Loss: 3.20, Val Loss: 3.47, Test Loss: 3.87
+Epoch 97, Train Loss: 3.19, Val Loss: 3.46, Test Loss: 3.74
+Epoch 98, Train Loss: 3.17, Val Loss: 3.51, Test Loss: 4.60
+Epoch 99, Train Loss: 3.23, Val Loss: 3.48, Test Loss: 4.02
+Epoch 100, Train Loss: 3.19, Val Loss: 3.51, Test Loss: 4.39
+Epoch 101, Train Loss: 3.21, Val Loss: 3.49, Test Loss: 4.09
+Epoch 102, Train Loss: 3.19, Val Loss: 3.48, Test Loss: 3.79
+Epoch   104: reducing learning rate of group 0 to 1.1865e-04.
+Epoch 103, Train Loss: 3.16, Val Loss: 3.53, Test Loss: 4.61
+Epoch 104, Train Loss: 3.23, Val Loss: 3.46, Test Loss: 3.62
+Epoch 105, Train Loss: 3.13, Val Loss: 3.47, Test Loss: 3.82
+Epoch 106, Train Loss: 3.15, Val Loss: 3.47, Test Loss: 3.61
+Epoch 107, Train Loss: 3.12, Val Loss: 3.48, Test Loss: 3.73
+Epoch 108, Train Loss: 3.13, Val Loss: 3.49, Test Loss: 3.89
+Epoch   110: reducing learning rate of group 0 to 8.8989e-05.
+Epoch 109, Train Loss: 3.14, Val Loss: 3.49, Test Loss: 3.88
+Epoch 110, Train Loss: 3.14, Val Loss: 3.48, Test Loss: 3.68
+Epoch 111, Train Loss: 3.11, Val Loss: 3.48, Test Loss: 3.58
+Epoch 112, Train Loss: 3.09, Val Loss: 3.48, Test Loss: 3.56
+Epoch 113, Train Loss: 3.09, Val Loss: 3.47, Test Loss: 3.59
+Epoch 114, Train Loss: 3.09, Val Loss: 3.49, Test Loss: 3.70
+Epoch   116: reducing learning rate of group 0 to 6.6742e-05.
+Epoch 115, Train Loss: 3.10, Val Loss: 3.49, Test Loss: 3.67
+Epoch 116, Train Loss: 3.09, Val Loss: 3.48, Test Loss: 3.57
+Epoch 117, Train Loss: 3.07, Val Loss: 3.48, Test Loss: 3.63
+Epoch 118, Train Loss: 3.08, Val Loss: 3.50, Test Loss: 3.80
+Epoch 119, Train Loss: 3.09, Val Loss: 3.49, Test Loss: 3.65
+Epoch 120, Train Loss: 3.08, Val Loss: 3.48, Test Loss: 3.66
+Epoch   122: reducing learning rate of group 0 to 5.0056e-05.
+Epoch 121, Train Loss: 3.07, Val Loss: 3.48, Test Loss: 3.55
+Epoch 122, Train Loss: 3.06, Val Loss: 3.48, Test Loss: 3.59
+Epoch 123, Train Loss: 3.06, Val Loss: 3.48, Test Loss: 3.54
+Epoch 124, Train Loss: 3.05, Val Loss: 3.48, Test Loss: 3.56
+Epoch 125, Train Loss: 3.05, Val Loss: 3.48, Test Loss: 3.54
+Epoch 126, Train Loss: 3.05, Val Loss: 3.48, Test Loss: 3.53
+Epoch   128: reducing learning rate of group 0 to 3.7542e-05.
+Epoch 127, Train Loss: 3.04, Val Loss: 3.49, Test Loss: 3.69
+Epoch 128, Train Loss: 3.06, Val Loss: 3.48, Test Loss: 3.51
+Epoch 129, Train Loss: 3.04, Val Loss: 3.49, Test Loss: 3.56
+Epoch 130, Train Loss: 3.04, Val Loss: 3.49, Test Loss: 3.51
+Epoch 131, Train Loss: 3.03, Val Loss: 3.49, Test Loss: 3.53
+Epoch 132, Train Loss: 3.03, Val Loss: 3.49, Test Loss: 3.52
+Epoch   134: reducing learning rate of group 0 to 2.8157e-05.
+Epoch 133, Train Loss: 3.03, Val Loss: 3.49, Test Loss: 3.51
+Epoch 134, Train Loss: 3.03, Val Loss: 3.50, Test Loss: 3.57
+Epoch 135, Train Loss: 3.03, Val Loss: 3.49, Test Loss: 3.51
+Epoch 136, Train Loss: 3.02, Val Loss: 3.49, Test Loss: 3.51
+Epoch 137, Train Loss: 3.02, Val Loss: 3.49, Test Loss: 3.50
+Epoch 138, Train Loss: 3.02, Val Loss: 3.50, Test Loss: 3.51
+Epoch   140: reducing learning rate of group 0 to 2.1118e-05.
+Epoch 139, Train Loss: 3.02, Val Loss: 3.50, Test Loss: 3.51
+Epoch 140, Train Loss: 3.02, Val Loss: 3.50, Test Loss: 3.49
+Epoch 141, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.51
+Epoch 142, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.49
+Epoch 143, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.53
+Epoch 144, Train Loss: 3.02, Val Loss: 3.50, Test Loss: 3.50
+Epoch   146: reducing learning rate of group 0 to 1.5838e-05.
+Epoch 145, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.50
+Epoch 146, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.51
+Epoch 147, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.49
+Epoch 148, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.50
+Epoch 149, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.50
+Epoch 150, Train Loss: 3.01, Val Loss: 3.50, Test Loss: 3.50
+Epoch   152: reducing learning rate of group 0 to 1.1879e-05.
+Epoch 151, Train Loss: 3.00, Val Loss: 3.50, Test Loss: 3.50
+Epoch 152, Train Loss: 3.00, Val Loss: 3.50, Test Loss: 3.49
+Epoch 153, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.50
+Epoch 154, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.52
+Epoch 155, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.49
+Epoch 156, Train Loss: 3.00, Val Loss: 3.50, Test Loss: 3.49
+Epoch   158: reducing learning rate of group 0 to 8.9090e-06.
+Epoch 157, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.50
+Epoch 158, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.50
+Epoch 159, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.49
+Epoch 160, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.50
+Epoch 161, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.49
+Epoch 162, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.50
+Epoch   164: reducing learning rate of group 0 to 6.6817e-06.
+Epoch 163, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.50
+Epoch 164, Train Loss: 3.00, Val Loss: 3.51, Test Loss: 3.49
+Epoch 165, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 166, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 167, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 168, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.49
+Epoch   170: reducing learning rate of group 0 to 5.0113e-06.
+Epoch 169, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 170, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 171, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 172, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 173, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 174, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch   176: reducing learning rate of group 0 to 3.7585e-06.
+Epoch 175, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 176, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 177, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.49
+Epoch 178, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 179, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 180, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch   182: reducing learning rate of group 0 to 2.8189e-06.
+Epoch 181, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 182, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 183, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 184, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 185, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 186, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch   188: reducing learning rate of group 0 to 2.1141e-06.
+Epoch 187, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 188, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 189, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 190, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 191, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 192, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch   194: reducing learning rate of group 0 to 1.5856e-06.
+Epoch 193, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 194, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 195, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 196, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 197, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch 198, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50
+Epoch   200: reducing learning rate of group 0 to 1.1892e-06.
+Epoch 199, Train Loss: 2.99, Val Loss: 3.51, Test Loss: 3.50

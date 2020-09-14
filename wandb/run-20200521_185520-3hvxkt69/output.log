@@ -1,0 +1,7 @@
+Initialized dataset with  64000  samples.
+Traceback (most recent call last):
+  File "train.py", line 234, in <module>
+    train_loss = train()
+  File "train.py", line 106, in train
+    x_sample, z_mu, z_var = model(x)
+ValueError: too many values to unpack (expected 3)

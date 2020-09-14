@@ -7,7 +7,8 @@ import torch.nn.functional as F
 import warnings
 
 from torch_geometric.data import InMemoryDataset, Data, DataLoader
-
+from torch_geometric.utils import grid
+from tqdm import tqdm
 
 class RegeneratedPGM(Dataset):
 
@@ -19,7 +20,25 @@ class RegeneratedPGM(Dataset):
 
     def __getitem__(self, index):
         item = np.load(self.data_path + self.data[index]).astype(int)
-        return item[:-29], item[-29:] 
+        return torch.from_numpy(item[:-29]), torch.from_numpy(item[-29:]) 
+
+    def __len__(self):
+        return self.length
+
+
+class NoUnionPGM(Dataset):
+
+    def __init__(self, data_path):
+        self.data_path = data_path
+        self.data = os.listdir(self.data_path)
+        self.length = len(self.data)
+        print("Initialized dataset with ", self.length, " samples.")
+
+    def __getitem__(self, index):
+        item = np.load(self.data_path + self.data[index]).astype(int)
+        #the input consists of the 2 grids in the last row and the present rules.
+        #the label is the 9-th panel.
+        return torch.from_numpy(np.concatenate((item[6*336:8*336], item[-29:]))), torch.from_numpy(item[8*336:-29])
 
     def __len__(self):
         return self.length
@@ -44,15 +63,24 @@ class GraphPGM(InMemoryDataset):
         for i in range(8):
             for j in range(8):
                 if i != j:
-                    edge_index[:,c] = torch.tensor([i,j], dtype=torch.long)
+                    edge_index[:, c] = torch.tensor([i, j], dtype=torch.long)
                     c += 1
 
+        pos = torch.tensor([[0, 0],
+                            [0, 1],
+                            [0, 2],
+                            [1, 0],
+                            [1, 1],
+                            [1, 2],
+                            [2, 0],
+                            [2, 1]])
+
         #Since I don't initialize data.pos, the GNN does not know the positions of the panels ==> invariance! (might also lead to poor performance)
-        for filename in os.listdir(self.data_dir):
+        for filename in tqdm(os.listdir(self.data_dir)):
             RPM = np.load(self.data_dir + filename)
-            x = torch.from_numpy(RPM[:8*336].reshape(8,336))
-            y = torch.from_numpy(RPM[-29:].reshape(1,29))
-            data = Data(x=x, edge_index=edge_index, y=y)
+            x = torch.from_numpy(RPM[:8*336].reshape(8, 336))
+            y = torch.from_numpy(RPM[-29:].reshape(1, 29))
+            data = Data(x=x, edge_index=edge_index, y=y, pos=pos)
             data_list.append(data)
 
         data, slices = self.collate(data_list)
@@ -67,7 +95,13 @@ def rule_metrics(x, x_rules, device):
     #x_rules.to(device)
 
     #first, convert logits to hard assignments.
-    y = x.view(-1, 3, 3, 336).float()
+    y = x.view(-1, 3, 3, 345).float()
+    existence = y[:,2,2,-9:]
+    existence[existence > 0.5] = 1
+    existence[existence <= 0.5] = 0
+    existence = existence.int()
+    y = y[:,:,:,:336]
+
     y /= 0.5
     y += 0.1
     sizes_oh = y[:, :, :, :99].view(-1, 3, 3, 9, 11) 
@@ -75,17 +109,36 @@ def rule_metrics(x, x_rules, device):
     types_oh = y[:, :, :, 198:270].view(-1, 3, 3, 9, 8)
     lcols_oh = y[:, :, :, 270:336].view(-1, 3, 3, 6, 11)
 
-    sizes_oh = F.one_hot(sizes_oh.argmax(4), num_classes=11)
-    cols_oh = F.one_hot(cols_oh.argmax(4), num_classes=11)
-    types_oh = F.one_hot(types_oh.argmax(4), num_classes=8)
-    lcols_oh = F.one_hot(lcols_oh.argmax(4), num_classes=11)
+    sizes_oh[:,2,2] = F.one_hot((1 + sizes_oh[:,2,2,:,1:].argmax(2))*existence, num_classes=11) #9,11
+    cols_oh[:,2,2] = F.one_hot((1+ cols_oh[:,2,2,:,1:].argmax(2))*existence, num_classes=11) #9,11
+    types_oh[:,2,2] = F.one_hot((1+types_oh[:,2,2,:,1:].argmax(2))*existence, num_classes=8) #9,8
+    lcols_oh[:,2,2] = F.one_hot(lcols_oh[:,2,2,:,1:].argmax(2), num_classes=11)
+
+    sizes_oh = sizes_oh.long()
+    cols_oh = cols_oh.long()
+    types_oh = types_oh.long()
+    lcols_oh = lcols_oh.long()
 
     #then, compute rules present in the hard assignments
     #compute attribute sets in one-hot encoding: result should have shape (64,3,3,4,10)
     attr_sets = torch.Tensor(64, 3, 3, 6, 10)
     panel_positions = torch.Tensor(64, 3, 3, 2, 10)
 
+    
+    #compute also for cols_oh and types_oh, check if all 3 are equal. If not, matrix is invalid!
+    sz = torch.cat((torch.argmax(sizes_oh[:,2,2], dim=2), torch.zeros((64,1), dtype=torch.long, device=device)), 1) #(64,10)
+    cl = torch.cat((torch.argmax(cols_oh[:,2,2], dim=2), torch.zeros((64,1), dtype=torch.long, device=device)), 1)
+    ty = torch.cat((torch.argmax(types_oh[:,2,2], dim=2), torch.zeros((64,1), dtype=torch.long, device=device)), 1)
+    sz[sz.nonzero(as_tuple=True)] = 1 
+    cl[cl.nonzero(as_tuple=True)] = 1
+    ty[ty.nonzero(as_tuple=True)] = 1
+    
+    valid = torch.prod(torch.logical_and(torch.eq(sz, cl), torch.eq(cl, ty)), dim=1) #(64)
+    
+    #valid = torch.eq(valid_aux, 90*torch.ones(64, device=device))
+
     panel_positions[:, :, :, 0] = torch.cat((torch.argmax(sizes_oh, dim=4), torch.zeros((64,3,3,1), dtype=torch.long, device=device)), axis=3) #(64,3,3,10)
+    
     panel_positions[:, :, :, 1] = torch.cat((torch.argmax(lcols_oh, dim=4), torch.zeros((64,3,3,4), dtype=torch.long, device=device)), axis=3) #(64,3,3,10)
 
     attr_sets[:,:,:,0] = torch.sum(sizes_oh, dim=3)[:,:,:,1:]
@@ -169,20 +222,36 @@ def rule_metrics(x, x_rules, device):
     position_rule_flag = torch.sum(rules[:,12:15], dim=1).long() #(64), 1 iff a shape position rule exists
     rules[:,10:12] *= (1 - position_rule_flag).view(-1,1) #number rules can't exist if a position rule exists
     
-    '''
-    print(rules[16,4])
-    print(x_rules[16,4])
-    print(attr_sets[16,:,:,0])
+    correct_vec = torch.prod(torch.eq(rules, x_rules).int(), dim=1)
+    correct = torch.sum(correct_vec)
+    total = 64
     
-    print(torch.nonzero(1-torch.eq(rules, x_rules).long()))
-    '''
+    moderate_correct_vec = torch.mul(valid, correct_vec.to(device))
     
-    Z = torch.sum(x_rules, dim=1)
-    Z_ = 29 - Z
-    tps = torch.sum(torch.mul(rules, x_rules), dim=1) #True Positives
-    tns = torch.sum(torch.mul(1-rules, 1-x_rules), dim=1) #True Positives
-    mean_sensitivity = torch.mean(torch.true_divide(tps, Z)) #Mean sensitivity
-    mean_specificity = torch.mean(torch.true_divide(tns, Z_))
+    moderate_correct = torch.sum(moderate_correct_vec).float()
     
-    #print(str(i) + " " +str(torch.equal(rules, x_rules)))
-    return mean_sensitivity, mean_specificity
+    flags = torch.zeros(64,6).to(device)
+    
+    flags[0] = torch.sum(rules[:,:5])   #shape.size
+    flags[1] = torch.sum(rules[:,5:10]) #shape.color
+    flags[2] = torch.sum(rules[:,10:15])#shape.num/pos
+    flags[3] = torch.sum(rules[:,15:20])#shape.type
+    flags[4] = torch.sum(rules[:,20:25])#line.color
+    flags[5] = torch.sum(rules[:,25:29])   #line.type
+
+    constant = torch.zeros(64,6).to(device)
+
+    constant[:,0] = torch.mul(torch.prod(torch.eq(attr_sets[:,2,2,0], attr_sets[:,0,0,0]), dim=1), torch.eq(torch.sum(attr_sets[:,2,2,0], dim=1), torch.ones(64)))
+    constant[:,1] = torch.mul(torch.prod(torch.eq(attr_sets[:,2,2,1], attr_sets[:,0,0,1]), dim=1), torch.eq(torch.sum(attr_sets[:,2,2,1], dim=1), torch.ones(64)))
+    constant[:,2] = torch.mul(torch.prod(torch.eq(attr_sets[:,2,2,4], attr_sets[:,0,0,4]), dim=1), torch.eq(torch.sum(attr_sets[:,2,2,4], dim=1), torch.ones(64)))
+    constant[:,3] = torch.mul(torch.prod(torch.eq(attr_sets[:,2,2,2], attr_sets[:,0,0,2]), dim=1), torch.eq(torch.sum(attr_sets[:,2,2,2], dim=1), torch.ones(64)))
+    constant[:,4] = torch.mul(torch.prod(torch.eq(attr_sets[:,2,2,3], attr_sets[:,0,0,3]), dim=1), torch.eq(torch.sum(attr_sets[:,2,2,3], dim=1), torch.ones(64)))
+    constant[:,5] = torch.mul(torch.prod(torch.eq(attr_sets[:,2,2,5], attr_sets[:,0,0,5]), dim=1), torch.eq(torch.sum(attr_sets[:,2,2,5], dim=1), torch.ones(64)))
+
+    constantness = torch.prod((flags + constant), dim=1)
+    constantness[constantness > 0] = 1
+
+    hard_correct_vec = torch.mul(constantness, correct_vec.to(device))
+    hard_correct = torch.sum(hard_correct_vec).float()
+
+    return correct, hard_correct, total, [sizes_oh, cols_oh, types_oh, lcols_oh]

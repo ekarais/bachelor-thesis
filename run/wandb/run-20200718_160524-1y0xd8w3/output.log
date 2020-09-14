@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "train_gnn.py", line 278, in <module>
+    plt.bar(test_acc_per_rule)
+TypeError: bar() missing 1 required positional argument: 'height'

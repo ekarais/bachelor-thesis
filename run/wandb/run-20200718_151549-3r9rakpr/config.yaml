@@ -1,0 +1,37 @@
+wandb_version: 1
+
+BATCH_SIZE:
+  desc: null
+  value: 2560
+HIDDEN_DIM:
+  desc: null
+  value: 512
+INPUT_DIM:
+  desc: null
+  value: 3024
+LATENT_DIM:
+  desc: null
+  value: 100
+N_EPOCHS:
+  desc: null
+  value: 500
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.8.36
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.7.7
+lr:
+  desc: null
+  value: 0.001
+test_size:
+  desc: null
+  value: 0.1
+train_size:
+  desc: null
+  value: 0.8
+val_size:
+  desc: null
+  value: 0.1
