@@ -42,7 +42,7 @@ jsonschema==3.2.0
 jupyter-client==6.1.2
 jupyter-core==4.6.3
 jupyterlab-server==1.1.0
-jupyterlab==1.2.6
+jupyterlab==1.2.21
 keras-applications==1.0.8
 keras-preprocessing==1.1.2
 keras==2.3.1
